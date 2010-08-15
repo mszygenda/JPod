@@ -1,21 +1,27 @@
 package line6;
 import javax.sound.midi.*;
+
 import java.util.*;
 import line6.commands.*;
 
 public class Device implements CommandArrived {
-	private String name;
-	protected MidiDevice midiDevice;
-	protected DeviceReceiver deviceReceiver;
+	protected String name;
+	private MidiDevice midiDeviceInput;
+	private MidiDevice midiDeviceOutput;
+	private DeviceReceiver deviceReceiver;
+	private boolean initialized;
 	protected DeviceSettings settings;
 	
-	public Device(MidiDevice dev)
+	public Device(MidiDevice input, MidiDevice output)
 	{
-		this.midiDevice = dev;
-		if(midiDevice != null)
+		initialized = false;
+		midiDeviceInput = input;
+		midiDeviceOutput = output;
+		if(midiDeviceInput != null && midiDeviceOutput != null)
 		{
-			name = midiDevice.getDeviceInfo().getName();
+			name = midiDeviceInput.getDeviceInfo().getName();
 			deviceReceiver = new DeviceReceiver(this);
+			init();
 		}
 		else
 			name = "unknown";
@@ -28,8 +34,10 @@ public class Device implements CommandArrived {
 	
 	protected void finalize()
 	{
-		if(midiDevice != null)
-			midiDevice.close();
+		if(midiDeviceInput != null)
+			midiDeviceInput.close();
+		if(midiDeviceOutput != null)
+			midiDeviceOutput.close();
 	}
 	
 	public String getName()
@@ -44,41 +52,54 @@ public class Device implements CommandArrived {
 	
 	protected boolean init()
 	{
-		if(midiDevice == null) {
-			return false;
-		}
-		else
+		if(!initialized)
 		{
-			try
-			{
-				if(!midiDevice.isOpen())
-					midiDevice.open();
-				midiDevice.getTransmitter().setReceiver(deviceReceiver);
-			}
-			catch (MidiUnavailableException e)
-			{
+			if(midiDeviceInput == null || midiDeviceOutput == null) {
+				initialized = false;
 				return false;
 			}
-			return midiDevice.isOpen();
+			else
+			{
+				try
+				{
+					midiDeviceInput.open();
+					midiDeviceOutput.open();
+					midiDeviceOutput.getTransmitter().setReceiver(deviceReceiver);
+				}
+				catch (MidiUnavailableException e)
+				{
+					System.out.println("MidiUnavailable exception during device initialization");
+					return false;
+				}
+				if(midiDeviceInput.isOpen() && midiDeviceOutput.isOpen())
+					initialized = true;
+				else
+					initialized = false;
+				return initialized;
+			}
 		}
+		else
+			return true;
+	}
+	
+	public boolean isInitialized()
+	{
+		return initialized;
 	}
 	
 	public boolean sendCommand(Command c)
 	{
-		try
+		if(isInitialized())
 		{
-			if(init())
-			{
-				midiDevice.getReceiver().send(c.toMidiMessage(), -1);
-				return true;
-			}
-			else
+			try {
+				midiDeviceInput.getReceiver().send(c.toMidiMessage(),-1);
+			} catch (MidiUnavailableException e) {
 				return false;
+			}
+			return true;
 		}
-		catch (MidiUnavailableException e)
-		{
+		else
 			return false;
-		}
 	}
 	
 	public boolean sync()

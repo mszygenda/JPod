@@ -16,10 +16,6 @@ public class ChangeParameterCommand extends Command {
 	private int parameterId;
 	private int value;
 	
-	
-	
-	
-	
 	public ChangeParameterCommand()
 	{
 		parameterId = -1;
@@ -82,6 +78,7 @@ public class ChangeParameterCommand extends Command {
 		ShortMessage msg = new ShortMessage();
 		try {
 			msg.setMessage(getType(), parameterId, value);
+			System.out.println(msg.getData1());
 		} catch (InvalidMidiDataException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

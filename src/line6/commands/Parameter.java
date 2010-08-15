@@ -10,8 +10,8 @@ public enum Parameter {
 	Mid(15),
 	Treble(16),
 	Reverb(18),
-	Amp(71),
-	Effect(34),
+	Amp(12),
+	Effect(19),
 	Unknown(-1);
 	
 	private int parameter_id;
