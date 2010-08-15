@@ -17,6 +17,7 @@ public class Device implements CommandArrived {
 		initialized = false;
 		midiDeviceInput = input;
 		midiDeviceOutput = output;
+		settings = new DeviceSettings();
 		if(midiDeviceInput != null && midiDeviceOutput != null)
 		{
 			name = midiDeviceInput.getDeviceInfo().getName();
@@ -30,6 +31,11 @@ public class Device implements CommandArrived {
 	public void commandArrived(Command c)
 	{
 		System.out.println("Received command");
+		if(c instanceof ChangeParameterCommand)
+		{
+			ChangeParameterCommand command = (ChangeParameterCommand)c;
+			settings.setValue(command.getParameter(), command.getValue());
+		}
 	}
 	
 	protected void finalize()

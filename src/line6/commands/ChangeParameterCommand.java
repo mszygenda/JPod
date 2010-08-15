@@ -13,28 +13,33 @@ import javax.sound.midi.ShortMessage;
  */
 public class ChangeParameterCommand extends Command {
 
-	private int parameterId;
+	private Parameter parameter;
 	private int value;
 	
 	public ChangeParameterCommand()
 	{
-		parameterId = -1;
+		parameter = Parameter.Unknown;
 		value = -1;
 	}
 	public ChangeParameterCommand(Parameter p, int _value)
 	{
-		parameterId = p.getParameterId();
+		parameter = p;
 		value = _value;
 	}
 	public ChangeParameterCommand(int _parameterId, int _value)
 	{
-		parameterId = _parameterId;
+		parameter = Parameter.getParameter(_parameterId);
 		value = _value;
+	}
+	
+	public Parameter getParameter()
+	{
+		return parameter;
 	}
 	
 	public int getParameterId()
 	{
-		return parameterId;
+		return parameter.getParameterId();
 	}
 	
 	public int getValue()
@@ -61,7 +66,7 @@ public class ChangeParameterCommand extends Command {
 		{
 			if(msg.getLength() == 3)
 			{
-				parameterId = msg.getMessage()[1];
+				parameter = Parameter.getParameter(msg.getMessage()[1]);
 				value = msg.getMessage()[2];
 				rawMessage = msg;
 			}
@@ -77,7 +82,7 @@ public class ChangeParameterCommand extends Command {
 		// TODO Auto-generated method stub
 		ShortMessage msg = new ShortMessage();
 		try {
-			msg.setMessage(getType(), parameterId, value);
+			msg.setMessage(getType(), parameter.getParameterId(), value);
 			System.out.println(msg.getData1());
 		} catch (InvalidMidiDataException e) {
 			// TODO Auto-generated catch block
@@ -89,9 +94,9 @@ public class ChangeParameterCommand extends Command {
 	public String toString()
 	{
 		return String.format("ChangeParameterCommand: parameter_id = %d, value = %d, parameter_name = %s,",
-				parameterId,
+				parameter.getParameterId(),
 				value, 
-				Parameter.getParameter(parameterId).toString());
+				parameter.toString());
 	}
 
 }

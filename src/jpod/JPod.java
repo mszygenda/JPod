@@ -12,14 +12,14 @@ import java.util.*;
  *
  */
 public class JPod {
-
+	public static ArrayList<Device> devices;
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("JPod application 0.1");
-		ArrayList<Device> devices = DeviceManager.getAllDevices();
+		devices = DeviceManager.getAllDevices();
 		ChangeChannelCommand testCommand = new ChangeChannelCommand(25);
 		ChangeParameterCommand testCommand2 = new ChangeParameterCommand(Parameter.Amp, 1);
 		for(int i = 0; i < devices.size(); i++)
