@@ -20,7 +20,7 @@ public class Device implements CommandArrived {
 		settings = new DeviceSettings();
 		if(midiDeviceInput != null && midiDeviceOutput != null)
 		{
-			name = midiDeviceInput.getDeviceInfo().getName();
+			name = String.format("%s", midiDeviceInput.getDeviceInfo().getDescription());
 			deviceReceiver = new DeviceReceiver(this);
 			init();
 		}
@@ -113,5 +113,8 @@ public class Device implements CommandArrived {
 		return false;
 	}
 	
-
+	public String toString()
+	{
+		return getName();
+	}
 }
