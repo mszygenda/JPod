@@ -3,15 +3,23 @@
  */
 package jpod;
 import line6.*;
+
 import line6.commands.*;
 
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.*;
+
+import javax.swing.*;
+import org.eclipse.swt.*;
+import org.eclipse.swt.widgets.*;
+import jpod.gui.*;
+
 /**
  * @author szygi
  *
  */
-public class JPod {
+public class JPod implements Runnable {
 	public static ArrayList<Device> devices;
 	/**
 	 * @param args
@@ -20,19 +28,22 @@ public class JPod {
 		// TODO Auto-generated method stub
 		System.out.println("JPod application 0.1");
 		devices = DeviceManager.getAllDevices();
-		ChangeChannelCommand testCommand = new ChangeChannelCommand(25);
-		ChangeParameterCommand testCommand2 = new ChangeParameterCommand(Parameter.Amp, 1);
-		for(int i = 0; i < devices.size(); i++)
-		{
-			if(devices.get(i).sendCommand(testCommand) && devices.get(i).sendCommand(testCommand2))
-			{
-				System.out.println("Communication works!");
-			}
-			else
-				System.out.println("Errors occured");
-			devices.get(i).getReceivedCommands();
-		}
+		EventQueue.invokeLater(new JPod());
+		
 		System.out.println("bye!");
+	}
+	
+	public void run()
+	{
+		try
+		{ 
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch(Exception e) {
+			System.out.println("Can not set native look and feel");
+		}
+		MainWindow window = new MainWindow();
+		window.setVisible(true);
 	}
 
 }

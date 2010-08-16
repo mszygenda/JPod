@@ -1,0 +1,11 @@
+JPod is java application used to control Line6 guitar effects devices such as Pocket POD etc.
+
+Development:
+Eclipse project is included
+
+TODO:
+-Full support for Pocket POD and similar devices
+-GUI to manipulate device settings.
+-Plugins: 
+	  Metronome and presets plans(Eg. In some bar active preset would change), 
+	  External devices control(For example wireless gamepad pedals) which can be used to change presets, effects.
