@@ -16,7 +16,8 @@ public enum Effect {
 	Compressor(11),
 	Tremolo(9),
 	Chorus1(8),
-	Chorus2(0);
+	Chorus2(0),
+	TurnOnOrOffEffect(50);
 	
 	private int effect_id;
 	private Effect(int id)

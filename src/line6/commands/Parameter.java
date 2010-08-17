@@ -11,7 +11,10 @@ public enum Parameter {
 	Treble(16),
 	Reverb(18),
 	Amp(12),
+	Cabinet(71),
+	Air(72),
 	Effect(19),
+	
 	Unknown(-1);
 	
 	private int parameter_id;

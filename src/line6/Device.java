@@ -5,24 +5,37 @@ import java.util.*;
 import line6.commands.*;
 
 public class Device implements CommandArrived {
+	protected DeviceSettings activePreset;
 	protected String name;
 	private MidiDevice midiDeviceInput;
 	private MidiDevice midiDeviceOutput;
+	private ArrayList<DeviceSettings> presets;
+	private SyncingThread syncThread;
+	private boolean devSynchronized;
 	private DeviceReceiver deviceReceiver;
+	protected DeviceInformation deviceInfo;
 	private boolean initialized;
-	protected DeviceSettings settings;
-	
+		
 	public Device(MidiDevice input, MidiDevice output)
 	{
 		initialized = false;
+		devSynchronized = false;
 		midiDeviceInput = input;
 		midiDeviceOutput = output;
-		settings = new DeviceSettings();
+		activePreset = new DeviceSettings();
+		presets = new ArrayList<DeviceSettings>();
+		syncThread = new SyncingThread();
 		if(midiDeviceInput != null && midiDeviceOutput != null)
 		{
 			name = String.format("%s", midiDeviceInput.getDeviceInfo().getDescription());
 			deviceReceiver = new DeviceReceiver(this);
 			init();
+			if(name.contains("Pocket POD"))
+			{
+				deviceInfo = DeviceInformation.PocketPOD;
+			}
+			else
+				deviceInfo = DeviceInformation.Default;
 		}
 		else
 			name = "unknown";
@@ -34,7 +47,7 @@ public class Device implements CommandArrived {
 		if(c instanceof ChangeParameterCommand)
 		{
 			ChangeParameterCommand command = (ChangeParameterCommand)c;
-			settings.setValue(command.getParameter(), command.getValue());
+			activePreset.setValue(command.getParameter(), command.getValue());
 		}
 	}
 	
@@ -93,6 +106,11 @@ public class Device implements CommandArrived {
 		return initialized;
 	}
 	
+	public boolean isSynchronized()
+	{
+		return devSynchronized;
+	}
+	
 	public boolean sendCommand(Command c)
 	{
 		if(isInitialized())
@@ -108,9 +126,53 @@ public class Device implements CommandArrived {
 			return false;
 	}
 	
-	public boolean sync()
+	public void stopSynchronize()
 	{
-		return false;
+		if(syncThread.isAlive())
+		{
+			syncThread.stopSync();
+		}
+	}
+	
+	public void synchronize()
+	{
+		if(syncThread.isAlive())
+		{
+			System.out.println("Device sync is started already");
+		}
+		else
+		{
+			syncThread.start();
+		}
+	}
+	/**
+	 * Thread that synchronise device(downloads presets)
+	 * @author szygi
+	 *
+	 */
+	class SyncingThread extends Thread
+	{
+		private boolean continueWork;
+		public void run()
+		{
+			continueWork = true;
+			
+			presets.clear();
+			for(int i = 0, count = deviceInfo.getPresetsCount(); i < count; i++)
+			{
+				//Command to get preset details
+			}
+			if(presets.size() == deviceInfo.getPresetsCount())
+			{
+				System.out.printf("Device \'%s\' is synchronized\n", name);
+				devSynchronized = true;
+			}
+		}
+		
+		public void stopSync()
+		{
+			continueWork = false;
+		}
 	}
 	
 	public String toString()

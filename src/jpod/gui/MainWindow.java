@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import jpod.JPod;
+import jpod.gui.widgets.BasicSettings;
 import line6.*;
 import line6.commands.ChangeParameterCommand;
 import line6.commands.Parameter;
@@ -16,44 +17,39 @@ import line6.commands.values.AmpModel;
 import line6.commands.values.Effect;
 
 public class MainWindow extends javax.swing.JFrame {
-	private JComboBox ampModelCB;
 	private JComboBox devicesCB;
-	private JComboBox effectsCB;
 	private Device activeDevice;
+	private BasicSettings basicSettingsWidget;
 	
 	public MainWindow()
 	{
 		super("JPod");
 		setLayout(new FlowLayout());
 		activeDevice = null;
+		basicSettingsWidget = new BasicSettings(activeDevice);
 		
 		//pre configuration
 	
 		//Creating widgets
-		ampModelCB = new JComboBox();
 		devicesCB = new JComboBox();
-		effectsCB = new JComboBox();
 		
 		//Adding widgets to the window
 		add(devicesCB);
-		add(ampModelCB);
-		add(effectsCB);
+		add(basicSettingsWidget);
 		
 		//post configuration
-		for(AmpModel amp : AmpModel.values())
-		{
-			ampModelCB.addItem(amp);
-		}
-		for(Effect effect : Effect.values())
-		{
-			effectsCB.addItem(effect);
-		}
-		ampModelCB.addItemListener(new AmpModelEvent());
+		
 		devicesCB.addItemListener(new DeviceChangedEvent());
-		effectsCB.addItemListener(new EffectChangedEvent());
 		refreshDevicesCombobox();
 		
 		pack();
+	}
+	
+	
+	
+	protected void reset()
+	{
+		
 	}
 	
 	protected void refreshDevicesCombobox()
@@ -63,25 +59,7 @@ public class MainWindow extends javax.swing.JFrame {
 			devicesCB.addItem(JPod.devices.get(i));
 		}
 		activeDevice = (Device)devicesCB.getSelectedItem();
-	}
-	
-	protected void reset()
-	{
-		
-	}
-	
-	
-	class AmpModelEvent implements ItemListener
-	{
-		public void itemStateChanged(ItemEvent e)
-		{
-			AmpModel model = (AmpModel)e.getItem();
-			ChangeParameterCommand c = new ChangeParameterCommand(Parameter.Amp,model.id());
-			if(activeDevice != null)
-			{
-				activeDevice.sendCommand(c);
-			}
-		}
+		basicSettingsWidget.setActiveDevice(activeDevice);
 	}
 	
 	class DeviceChangedEvent implements ItemListener
@@ -97,19 +75,5 @@ public class MainWindow extends javax.swing.JFrame {
 		}
 	}
 	
-	class EffectChangedEvent implements ItemListener
-	{
-		public void itemStateChanged(ItemEvent e)
-		{
-			Effect effect = (Effect)e.getItem();
-			if(effect != null)
-			{
-				ChangeParameterCommand c = new ChangeParameterCommand(Parameter.Effect,effect.id());
-				if(activeDevice != null)
-				{
-					activeDevice.sendCommand(c);
-				}
-			}
-		}
-	}
+
 }

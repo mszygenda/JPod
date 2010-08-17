@@ -2,6 +2,7 @@ package line6;
 
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
+import javax.sound.midi.SysexMessage;
 
 import javax.sound.midi.Receiver;
 import java.util.*;
@@ -39,6 +40,10 @@ public class DeviceReceiver implements Receiver {
 				break;
 			case ShortMessage.CONTROL_CHANGE:
 				tmp = new ChangeParameterCommand();
+				break;
+			case SysexMessage.SYSTEM_EXCLUSIVE:
+				System.out.println("Sysex message");
+				System.out.println(msg.getMessage());
 				break;
 		}
 		if(tmp != null)
