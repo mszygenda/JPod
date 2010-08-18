@@ -31,7 +31,9 @@ public class Device implements CommandArrived {
 		syncThread = new SyncingThread();
 		if(midiDeviceInput != null && midiDeviceOutput != null)
 		{
-			name = String.format("%s", midiDeviceInput.getDeviceInfo().getDescription());
+			name = String.format("%s %s", 
+					midiDeviceInput.getDeviceInfo().getDescription(),
+					midiDeviceInput.getDeviceInfo().getName());
 			deviceReceiver = new DeviceReceiver(this);
 			init();
 			if(name.contains("Pocket POD"))
