@@ -11,12 +11,10 @@ import java.io.IOException;
 import java.util.*;
 
 import javax.swing.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.widgets.*;
 import jpod.gui.*;
 
 /**
- * @author szygi
+ * @author Mateusz Szygenda
  *
  */
 public class JPod implements Runnable {

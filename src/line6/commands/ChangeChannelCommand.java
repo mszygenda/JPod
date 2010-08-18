@@ -1,12 +1,10 @@
 /**
- * 
+ * @author Mateusz Szygenda
+ *
  */
 package line6.commands;
 import javax.sound.midi.*;
-/**
- * @author szygi
- *
- */
+
 public class ChangeChannelCommand extends Command {
 
 	private int programNumber;

@@ -1,6 +1,10 @@
+/**
+ * @author Mateusz Szygenda
+ *
+ */
 package line6.commands;
 
-public enum Parameter {
+public enum Parameter implements BaseParameter {
 	Volume(7),
 	ChannelVolume(17),
 	Delay(34),
@@ -22,14 +26,21 @@ public enum Parameter {
 	{
 		parameter_id = id;
 	}
-	public static Parameter getParameter(int parameterId)
+	
+	public static BaseParameter getParameter(int parameterId)
 	{
 		 for (Parameter p : Parameter.values()) {
 	           if(p.getParameterId() == parameterId)
 	        	   return p;
 		 }
+		 for(EffectParameter p : EffectParameter.values())
+		 {
+			 if(p.id() == parameterId)
+				 return p;
+		 }
 		 return Unknown;
 	}
+	
 	public int getParameterId()
 	{
 		return parameter_id;
@@ -37,6 +48,10 @@ public enum Parameter {
 	public String toString()
 	{
 		return super.toString();
+	}
+	@Override
+	public int id() {
+		return getParameterId();
 	}
 	
 }

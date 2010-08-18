@@ -1,5 +1,5 @@
 package jpod.gui;
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -9,24 +9,40 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import jpod.JPod;
+import jpod.gui.widgets.BaseWidget;
 import jpod.gui.widgets.BasicSettings;
+import jpod.gui.widgets.EffectSettings;
 import line6.*;
 import line6.commands.ChangeParameterCommand;
 import line6.commands.Parameter;
+/**
+ * @author Mateusz Szygenda
+ *
+ */
+
 import line6.commands.values.AmpModel;
 import line6.commands.values.Effect;
+
 
 public class MainWindow extends javax.swing.JFrame {
 	private JComboBox devicesCB;
 	private Device activeDevice;
-	private BasicSettings basicSettingsWidget;
+	private ArrayList<BaseWidget> widgets;
 	
 	public MainWindow()
 	{
 		super("JPod");
-		setLayout(new FlowLayout());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.Y_AXIS));
 		activeDevice = null;
-		basicSettingsWidget = new BasicSettings(activeDevice);
+		widgets = new ArrayList<BaseWidget>();
+		
+		BasicSettings basicSettingsWidget = new BasicSettings(activeDevice);
+		EffectSettings effectSettingsWidget = new EffectSettings(activeDevice);
+		
+		widgets.add(basicSettingsWidget);
+		widgets.add(effectSettingsWidget);
 		
 		//pre configuration
 	
@@ -36,6 +52,7 @@ public class MainWindow extends javax.swing.JFrame {
 		//Adding widgets to the window
 		add(devicesCB);
 		add(basicSettingsWidget);
+		add(effectSettingsWidget);
 		
 		//post configuration
 		
@@ -45,7 +62,13 @@ public class MainWindow extends javax.swing.JFrame {
 		pack();
 	}
 	
-	
+	protected void raiseActiveDeviceChanged()
+	{
+		for(BaseWidget widget : widgets)
+		{
+			widget.setActiveDevice(activeDevice);
+		}
+	}
 	
 	protected void reset()
 	{
@@ -59,7 +82,7 @@ public class MainWindow extends javax.swing.JFrame {
 			devicesCB.addItem(JPod.devices.get(i));
 		}
 		activeDevice = (Device)devicesCB.getSelectedItem();
-		basicSettingsWidget.setActiveDevice(activeDevice);
+		raiseActiveDeviceChanged();
 	}
 	
 	class DeviceChangedEvent implements ItemListener

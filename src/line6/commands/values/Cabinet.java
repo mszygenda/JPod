@@ -1,6 +1,12 @@
+/**
+ * @author Mateusz Szygenda
+ *
+ */
 package line6.commands.values;
 
-public enum Cabinet {
+import line6.commands.BaseParameter;
+
+public enum Cabinet implements BaseParameter {
 	SmallTweed2_1x8(0),
 	SmallTweed_1x12(1),
 	BlackPanel_1x12(3),
@@ -23,4 +29,11 @@ public enum Cabinet {
 	{
 		cabinet_id = id;
 	}
+
+	@Override
+	public int id() {
+		return cabinet_id;
+	}
+	
+	
 }

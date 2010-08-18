@@ -1,6 +1,12 @@
+/**
+ * @author Mateusz Szygenda
+ *
+ */
 package line6.commands.values;
 
-public enum AmpModel {
+import line6.commands.BaseParameter;
+
+public enum AmpModel implements BaseParameter {
 	Line6Insane(31),
 	Line6Clean(1),
 	Line6Twang(28),

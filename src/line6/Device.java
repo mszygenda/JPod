@@ -1,3 +1,7 @@
+/**
+ * @author Mateusz Szygenda
+ *
+ */
 package line6;
 import javax.sound.midi.*;
 
