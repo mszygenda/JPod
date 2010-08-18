@@ -24,7 +24,7 @@ public class DeviceManager {
 		Device tmpDevice = null;
 		for(int i = 0, count = devices.length; i < count; i++)
 		{
-			if(devices[i].getDescription().contains("Line 6"))
+			if(devices[i].getDescription().contains("Line 6") || devices[i].getName().contains("Line 6"))
 			{
 				try {
 					tmpMidiDevice = MidiSystem.getMidiDevice(devices[i]);
