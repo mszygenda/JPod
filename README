@@ -3,6 +3,10 @@ JPod is java application used to control Line6 guitar effects devices such as Po
 Development:
 Eclipse project is included
 
+Compilation:
+ant jar
+java -jar bin/JPod.jar
+
 TODO:
 -Full support for Pocket POD and similar devices
 -GUI to manipulate device settings.
