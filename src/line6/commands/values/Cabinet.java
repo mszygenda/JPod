@@ -34,6 +34,11 @@ public enum Cabinet implements BaseParameter {
 	public int id() {
 		return cabinet_id;
 	}
+
+	@Override
+	public int getMaxValue() {
+		return 0;
+	}
 	
 	
 }

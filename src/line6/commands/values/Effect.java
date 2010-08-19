@@ -65,4 +65,8 @@ public enum Effect implements BaseParameter {
 	{
 		return effect_id;
 	}
+	@Override
+	public int getMaxValue() {
+		return 0;
+	}
 }

@@ -118,7 +118,7 @@ public class EffectSettings extends BaseWidget {
 			}
 			ChangeParameterCommand command = null;
 			if(effect != null)
-				command = new ChangeParameterCommand(effect.id(),source.getValue());
+				command = new ChangeParameterCommand(effect.id(),(effect.getMaxValue()/100) * source.getValue());
 			sendCommand(command);
 		}
 		

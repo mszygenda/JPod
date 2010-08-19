@@ -55,6 +55,11 @@ public class Device implements CommandArrived {
 			ChangeParameterCommand command = (ChangeParameterCommand)c;
 			activePreset.setValue(command.getParameter(), command.getValue());
 		}
+		if(c instanceof PresetSyncCommand)
+		{
+			PresetSyncCommand command = (PresetSyncCommand)c;
+			presets.add(command.getPreset());
+		}
 	}
 	
 	protected void finalize()
@@ -164,8 +169,11 @@ public class Device implements CommandArrived {
 			continueWork = true;
 			
 			presets.clear();
+			GetPresetCommand c = new GetPresetCommand(0);
 			for(int i = 0, count = deviceInfo.getPresetsCount(); i < count; i++)
 			{
+				c.setPresetId(i);
+				sendCommand(c);
 				//Command to get preset details
 			}
 			if(presets.size() == deviceInfo.getPresetsCount())

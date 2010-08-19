@@ -18,13 +18,22 @@ public enum Parameter implements BaseParameter {
 	Cabinet(71),
 	Air(72),
 	Effect(19),
+	Presence(21),
 	
 	Unknown(-1);
 	
 	private int parameter_id;
+	private int maxValue;
+	
 	private Parameter(int id)
 	{
+		this(id,126);
+	}
+	
+	private Parameter(int id, int maxVal)
+	{
 		parameter_id = id;
+		maxValue = maxVal;
 	}
 	
 	public static BaseParameter getParameter(int parameterId)
@@ -52,6 +61,11 @@ public enum Parameter implements BaseParameter {
 	@Override
 	public int id() {
 		return getParameterId();
+	}
+
+	@Override
+	public int getMaxValue() {
+		return maxValue;
 	}
 	
 }

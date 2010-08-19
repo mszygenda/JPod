@@ -13,14 +13,26 @@ public enum ParameterSwitch  implements BaseParameter {
 	Distortion(25),
 	Drive(26),
 	Eq(27),
+	Delay(28),
 	TurnOnOrOffEffect(50);
 	private int switch_id;
-	ParameterSwitch(int id) 
+	private int maxValue;
+	
+	ParameterSwitch(int id)
+	{
+		this(id,126);
+	}
+	ParameterSwitch(int id, int newMaxValue) 
 	{
 		switch_id = id;
+		maxValue = newMaxValue;
 	}
 	@Override
 	public int id() {
 		return switch_id;
+	}
+	@Override
+	public int getMaxValue() {
+		return maxValue;
 	}
 }

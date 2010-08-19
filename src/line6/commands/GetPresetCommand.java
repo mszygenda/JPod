@@ -17,6 +17,11 @@ public class GetPresetCommand extends Command {
 		return 34;
 	}
 
+	public void setPresetId(int id)
+	{
+		preset_id = id;
+	}
+	
 	@Override
 	public MidiMessage toMidiMessage() {
 

@@ -51,4 +51,9 @@ public enum AmpModel implements BaseParameter {
 	{
 		return model_id;
 	}
+
+	@Override
+	public int getMaxValue() {
+		return 0;
+	}
 }

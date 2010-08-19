@@ -19,4 +19,9 @@ public enum Global implements BaseParameter {
 	{
 		return value;
 	}
+
+	@Override
+	public int getMaxValue() {
+		return 0;
+	}
 }

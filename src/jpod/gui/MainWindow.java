@@ -69,8 +69,7 @@ public class MainWindow extends javax.swing.JFrame {
 		{
 			widget.setActiveDevice(activeDevice);
 		}
-		GetPresetCommand c = new GetPresetCommand(0);
-		activeDevice.sendCommand(c);
+		activeDevice.synchronize();		
 	}
 	
 	protected void reset()
@@ -100,6 +99,4 @@ public class MainWindow extends javax.swing.JFrame {
 			}
 		}
 	}
-	
-
 }
