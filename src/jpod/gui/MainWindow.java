@@ -69,7 +69,8 @@ public class MainWindow extends javax.swing.JFrame {
 		{
 			widget.setActiveDevice(activeDevice);
 		}
-		activeDevice.synchronize();		
+		if(activeDevice != null)
+			activeDevice.synchronize();		
 	}
 	
 	protected void reset()
