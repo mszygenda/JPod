@@ -5,6 +5,7 @@
 package line6.commands.values;
 
 import line6.commands.BaseParameter;
+import line6.commands.Parameter;
 
 public enum Cabinet implements BaseParameter {
 	SmallTweed2_1x8(0),
@@ -40,5 +41,14 @@ public enum Cabinet implements BaseParameter {
 		return 0;
 	}
 	
+	public static BaseParameter getValue(int valueId)
+	{
+		 for(Cabinet c : line6.commands.values.Cabinet.values())
+		 {
+			 if(c.id() == valueId)
+				 return c;
+		 }
+		 return Parameter.Unknown;
+	}
 	
 }

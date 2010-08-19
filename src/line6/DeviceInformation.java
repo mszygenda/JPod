@@ -5,7 +5,7 @@
 package line6;
 
 public enum DeviceInformation {
-	PocketPOD(101),
+	PocketPOD(124),
 	Default(100);
 	
 	private int presetsCount;

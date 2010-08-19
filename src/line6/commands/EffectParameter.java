@@ -16,7 +16,16 @@ public enum EffectParameter implements BaseParameter {
 	DelayCoarse(30),
 	DelayFine(62),
 	DelayFeedback(32),
-	DelayLevel(34);
+	DelayLevel(34),
+	ReverbDecay(38),
+	ReverbTone(39),
+	ReverbDiffusion(40),
+	ReverbDensity(41),
+	WahPosition(4),
+	WahBotFreq(44),
+	WahTopFreq(45),
+	NoiseGateThreshold(23),
+	NoiseGateDecay(24);
 	
 	private int effect_parameter_id;
 	private int maxValue;

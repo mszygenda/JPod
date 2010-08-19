@@ -46,58 +46,40 @@ public class PresetSyncCommand extends Command {
 		// TODO Auto-generated method stub
 		if(m.getLength() == length())
 		{
-			
 			//settings.setId(m.getMessage()[PRESET_ID_POSITION]);
 			//settings.setValue(ParameterSwitch.Eq, m.getMessage()[EQ_STATUS_POSITION] * Global.EffectOn.id());
-			
 			byte header [] = new byte[7];
 			byte presetName [] = new byte[32];
-			byte shortInt []= new byte [2];
 			ByteArrayInputStream stream = new ByteArrayInputStream(m.getMessage());
 			try {
 				stream.read(header);
 				//Preset id
-				settings.setId(stream.read());
+				settings.setId(stream.read()+1);
 				//We dont know what is there yet
 				stream.skip(2);
-				settings.setValue(ParameterSwitch.Distortion, stream.read()*Global.EffectOn.id());
+				switchProperty(ParameterSwitch.Distortion, stream);
 				stream.skip(2);
-				settings.setValue(ParameterSwitch.Drive,stream.read()*Global.EffectOn.id());
-				settings.setValue(ParameterSwitch.Eq,stream.read()*Global.EffectOn.id());
+				switchProperty(ParameterSwitch.Drive, stream);
+				switchProperty(ParameterSwitch.Eq, stream);
 				stream.skip(1);
-				settings.setValue(ParameterSwitch.Delay, stream.read() * Global.EffectOn.id());//Delay switch
+				switchProperty(ParameterSwitch.Delay, stream);//Delay switch
 				stream.skip(5);
-				settings.setValue(ParameterSwitch.NoiseGate, stream.read()*Global.EffectOn.id());
-				
-				//Drive
-				stream.read(shortInt);
-				settings.setValue(Parameter.Drive,2*parsePodShortInteger(shortInt));
-				
+				switchProperty(ParameterSwitch.NoiseGate, stream);
+	
+				shortIntProperty(Parameter.Drive,stream);
 				stream.skip(6);
-				//Bass
-				stream.read(shortInt);
-				settings.setValue(Parameter.Bass, 2*parsePodShortInteger(shortInt));
-				//Mid
-				stream.read(shortInt);
-				settings.setValue(Parameter.Mid, 2*parsePodShortInteger(shortInt));
-				//Treble
-				stream.read(shortInt);
-				settings.setValue(Parameter.Treble, 2*parsePodShortInteger(shortInt));
-				
-				//Presence
-				stream.read(shortInt);
-				settings.setValue(Parameter.Presence, 2*parsePodShortInteger(shortInt));
-				
-				//Channel volume
-				stream.read(shortInt);
-				settings.setValue(Parameter.ChannelVolume,2*parsePodShortInteger(shortInt));
-				
-				stream.skip(54);
-				stream.read(shortInt);
-				//reverb
-				settings.setValue(Parameter.Reverb, 2*parsePodShortInteger(shortInt));
-				
+				shortIntProperty(Parameter.Bass, stream);
+				shortIntProperty(Parameter.Mid, stream);
+				shortIntProperty(Parameter.Treble, stream);
+				shortIntProperty(Parameter.Presence,stream);
+				shortIntProperty(Parameter.ChannelVolume,stream);
+				shortIntProperty(EffectParameter.NoiseGateThreshold, stream);
+				shortIntProperty(EffectParameter.NoiseGateDecay, stream);
+				stream.skip(48);
+				shortIntProperty(EffectParameter.ReverbDensity, stream);
+				shortIntProperty(Parameter.Reverb, stream);
 				stream.skip(22);
+				
 				stream.read(presetName);
 				settings.setName(parsePodString(presetName));
 			} catch (IOException e) {
@@ -106,7 +88,16 @@ public class PresetSyncCommand extends Command {
 		}
 		return false;
 	}
-	
+	private void shortIntProperty(BaseParameter p, ByteArrayInputStream stream) throws IOException
+	{
+		byte shortInt[] = new byte[2];
+		stream.read(shortInt);
+		settings.setValue(p, 2*parsePodShortInteger(shortInt));
+	}
+	private void switchProperty(BaseParameter p, ByteArrayInputStream stream) throws IOException
+	{
+		settings.setValue(p, stream.read()*Global.EffectOn.id());
+	}
 	public static int toPodShortInteger(int shortInt)
 	{
 		return (shortInt % 16) + (256*(shortInt/16));

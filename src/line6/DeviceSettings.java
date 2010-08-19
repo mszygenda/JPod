@@ -37,6 +37,11 @@ public class DeviceSettings {
 		return name;
 	}
 	
+	public Enumeration<BaseParameter> getParameters()
+	{
+		return parameterValues.keys();
+	}
+	
 	public int getValue(BaseParameter param)
 	{
 		Integer val = parameterValues.get(param);

@@ -37,4 +37,5 @@ public abstract class BaseWidget extends JComponent {
 	}
 	
 	abstract void activeDeviceChanged();
+	public abstract void settingsChanged(Device dev);
 }

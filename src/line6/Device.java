@@ -7,9 +7,11 @@ import javax.sound.midi.*;
 
 import java.util.*;
 import line6.commands.*;
+import line6.events.DeviceListener;
 
 public class Device implements CommandArrived {
 	protected DeviceSettings activePreset;
+	private ArrayList<DeviceListener> eventListeners;
 	protected String name;
 	private MidiDevice midiDeviceInput;
 	private MidiDevice midiDeviceOutput;
@@ -19,7 +21,7 @@ public class Device implements CommandArrived {
 	private DeviceReceiver deviceReceiver;
 	protected DeviceInformation deviceInfo;
 	private boolean initialized;
-		
+	
 	public Device(MidiDevice input, MidiDevice output)
 	{
 		initialized = false;
@@ -27,6 +29,7 @@ public class Device implements CommandArrived {
 		midiDeviceInput = input;
 		midiDeviceOutput = output;
 		activePreset = new DeviceSettings();
+		eventListeners = new ArrayList<DeviceListener>();
 		presets = new ArrayList<DeviceSettings>();
 		syncThread = new SyncingThread();
 		if(midiDeviceInput != null && midiDeviceOutput != null)
@@ -47,13 +50,37 @@ public class Device implements CommandArrived {
 			name = "unknown";
 	}
 	
+	public void addEventListener(DeviceListener listener)
+	{
+		eventListeners.add(listener);
+	}
+	
 	public void commandArrived(Command c)
 	{
 		System.out.println("Received command");
+		if(c instanceof ChangeChannelCommand)
+		{
+			ChangeChannelCommand command = (ChangeChannelCommand)c;
+			for(DeviceSettings preset : presets)
+			{
+				if(preset.getId() == command.getProgram())
+				{
+					activePreset = preset;
+				}
+			}
+			for(DeviceListener listener : eventListeners)
+			{
+				listener.presetsSynchronized(this);
+			}
+		}
 		if(c instanceof ChangeParameterCommand)
 		{
 			ChangeParameterCommand command = (ChangeParameterCommand)c;
 			activePreset.setValue(command.getParameter(), command.getValue());
+			for(DeviceListener listener : eventListeners)
+			{
+				listener.parameterChanged(this,command.getParameter(),command.getValue());
+			}
 		}
 		if(c instanceof PresetSyncCommand)
 		{
@@ -68,6 +95,11 @@ public class Device implements CommandArrived {
 			midiDeviceInput.close();
 		if(midiDeviceOutput != null)
 			midiDeviceOutput.close();
+	}
+	
+	public DeviceSettings getActivePreset()
+	{
+		return activePreset;
 	}
 	
 	public String getName()
@@ -174,12 +206,26 @@ public class Device implements CommandArrived {
 			{
 				c.setPresetId(i);
 				sendCommand(c);
-				//Command to get preset details
+				//Wait for preset
+				try {
+					this.sleep(80,0);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			if(presets.size() == deviceInfo.getPresetsCount())
 			{
 				System.out.printf("Device \'%s\' is synchronized\n", name);
+				activePreset = presets.get(0);
+				System.out.printf("Device active preset: %d",activePreset.getId());
+				ChangeChannelCommand channelCmd = new ChangeChannelCommand(activePreset.getId());
+				sendCommand(channelCmd);
 				devSynchronized = true;
+				for(DeviceListener listener : eventListeners)
+				{
+					listener.presetsSynchronized(Device.this);
+				}
 			}
 		}
 		

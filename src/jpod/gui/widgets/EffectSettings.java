@@ -10,6 +10,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import line6.Device;
+import line6.DeviceSettings;
 import line6.commands.BaseParameter;
 import line6.commands.ChangeParameterCommand;
 import line6.commands.EffectParameter;
@@ -122,5 +123,20 @@ public class EffectSettings extends BaseWidget {
 			sendCommand(command);
 		}
 		
+	}
+
+	@Override
+	public void settingsChanged(Device dev) {
+		DeviceSettings activePreset = dev.getActivePreset();
+		BaseParameter p;
+		System.out.println("Hello");
+		for(Enumeration<BaseParameter> parameters = activePreset.getParameters(); parameters.hasMoreElements();)
+		{
+			p = parameters.nextElement();
+			if(widgets.get(p) != null)
+			{
+				widgets.get(p).setValue(activePreset.getValue(p));
+			}
+		}
 	}
 }

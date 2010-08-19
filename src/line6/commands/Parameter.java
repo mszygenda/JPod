@@ -4,6 +4,8 @@
  */
 package line6.commands;
 
+import line6.commands.values.*;
+
 public enum Parameter implements BaseParameter {
 	Volume(7),
 	ChannelVolume(17),
@@ -49,6 +51,7 @@ public enum Parameter implements BaseParameter {
 		 }
 		 return Unknown;
 	}
+	
 	
 	public int getParameterId()
 	{

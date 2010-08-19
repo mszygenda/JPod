@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 
 import jpod.JPod;
 import line6.*;
+import line6.commands.BaseParameter;
 import line6.commands.ChangeParameterCommand;
 import line6.commands.Parameter;
 import line6.commands.values.AmpModel;
@@ -114,6 +115,16 @@ public class BasicSettings extends BaseWidget {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void settingsChanged(Device dev) {
+		BaseParameter amplifier = AmpModel.getValue(dev.getActivePreset().getValue(Parameter.Amp));
+		BaseParameter cabinet = Cabinet.getValue(dev.getActivePreset().getValue(Parameter.Cabinet));
+		BaseParameter effect = Effect.getValue(dev.getActivePreset().getValue(Parameter.Effect));
+		ampModelCB.setSelectedItem(amplifier);
+		cabsCB.setSelectedItem(cabinet);
+		effectsCB.setSelectedItem(effect);
 	}
 
 

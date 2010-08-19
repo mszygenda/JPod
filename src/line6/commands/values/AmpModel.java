@@ -5,6 +5,7 @@
 package line6.commands.values;
 
 import line6.commands.BaseParameter;
+import line6.commands.Parameter;
 
 public enum AmpModel implements BaseParameter {
 	Line6Insane(31),
@@ -52,6 +53,15 @@ public enum AmpModel implements BaseParameter {
 		return model_id;
 	}
 
+	public static BaseParameter getValue(int valueId)
+	{
+		 for(AmpModel a : line6.commands.values.AmpModel.values())
+		 {
+			 if(a.id() == valueId)
+				 return a;
+		 }
+		 return Parameter.Unknown;
+	}
 	@Override
 	public int getMaxValue() {
 		return 0;

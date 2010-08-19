@@ -14,6 +14,7 @@ public enum ParameterSwitch  implements BaseParameter {
 	Drive(26),
 	Eq(27),
 	Delay(28),
+	Wah(43),
 	TurnOnOrOffEffect(50);
 	private int switch_id;
 	private int maxValue;

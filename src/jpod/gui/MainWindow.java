@@ -13,6 +13,7 @@ import jpod.gui.widgets.BaseWidget;
 import jpod.gui.widgets.BasicSettings;
 import jpod.gui.widgets.EffectSettings;
 import line6.*;
+import line6.commands.BaseParameter;
 import line6.commands.ChangeParameterCommand;
 import line6.commands.GetPresetCommand;
 import line6.commands.Parameter;
@@ -23,9 +24,10 @@ import line6.commands.Parameter;
 
 import line6.commands.values.AmpModel;
 import line6.commands.values.Effect;
+import line6.events.DeviceListener;
 
 
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 	private JComboBox devicesCB;
 	private Device activeDevice;
 	private ArrayList<BaseWidget> widgets;
@@ -70,7 +72,10 @@ public class MainWindow extends javax.swing.JFrame {
 			widget.setActiveDevice(activeDevice);
 		}
 		if(activeDevice != null)
-			activeDevice.synchronize();		
+		{
+			activeDevice.addEventListener(this);
+			activeDevice.synchronize();
+		}
 	}
 	
 	protected void reset()
@@ -99,5 +104,18 @@ public class MainWindow extends javax.swing.JFrame {
 				reset();
 			}
 		}
+	}
+
+	@Override
+	public void presetsSynchronized(Device dev) {
+		for(BaseWidget widget : widgets)
+		{
+			widget.settingsChanged(dev);
+		}
+	}
+
+	@Override
+	public void parameterChanged(Device dev, BaseParameter p, int value) {
+		presetsSynchronized(dev);
 	}
 }

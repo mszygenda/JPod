@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import line6.commands.BaseParameter;
 import line6.commands.EffectParameter;
+import line6.commands.Parameter;
 
 public enum Effect implements BaseParameter {
 	Flanger1(1),
@@ -68,5 +69,15 @@ public enum Effect implements BaseParameter {
 	@Override
 	public int getMaxValue() {
 		return 0;
+	}
+	
+	public static BaseParameter getValue(int valueId)
+	{
+		 for(Effect e : line6.commands.values.Effect.values())
+		 {
+			 if(e.id() == valueId)
+				 return e;
+		 }
+		 return Parameter.Unknown;
 	}
 }
