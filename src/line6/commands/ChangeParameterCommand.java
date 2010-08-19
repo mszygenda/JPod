@@ -102,4 +102,9 @@ public class ChangeParameterCommand extends Command {
 				parameter.toString());
 	}
 
+	@Override
+	public int length() {
+		return Command.SHORT_MESSAGE_SIZE;
+	}
+
 }

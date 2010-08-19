@@ -14,6 +14,7 @@ import jpod.gui.widgets.BasicSettings;
 import jpod.gui.widgets.EffectSettings;
 import line6.*;
 import line6.commands.ChangeParameterCommand;
+import line6.commands.GetPresetCommand;
 import line6.commands.Parameter;
 /**
  * @author Mateusz Szygenda
@@ -68,6 +69,8 @@ public class MainWindow extends javax.swing.JFrame {
 		{
 			widget.setActiveDevice(activeDevice);
 		}
+		GetPresetCommand c = new GetPresetCommand(0);
+		activeDevice.sendCommand(c);
 	}
 	
 	protected void reset()

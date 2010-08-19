@@ -46,6 +46,12 @@ public class DeviceReceiver implements Receiver {
 				tmp = new ChangeParameterCommand();
 				break;
 			case SysexMessage.SYSTEM_EXCLUSIVE:
+				switch(msg.getLength())
+				{
+				case Command.PRESET_SYNC_SIZE:
+					tmp = new PresetSyncCommand();
+					break;
+				}
 				System.out.println("Sysex message");
 				System.out.println(msg.getMessage());
 				break;

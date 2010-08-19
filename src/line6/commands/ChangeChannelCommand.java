@@ -60,4 +60,9 @@ public class ChangeChannelCommand extends Command {
 	{
 		return String.format("ChangeChannelCommand to %d\n",getProgram());
 	}
+
+	@Override
+	public int length() {
+		return Command.CHANGE_PARAMETER_SIZE;
+	}
 }
