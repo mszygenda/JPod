@@ -30,6 +30,7 @@ import line6.events.DeviceListener;
 public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 	private JComboBox devicesCB;
 	private Device activeDevice;
+	private JTextField presetNameTextbox;
 	private ArrayList<BaseWidget> widgets;
 	
 	public MainWindow()
@@ -40,6 +41,8 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.Y_AXIS));
 		activeDevice = null;
 		widgets = new ArrayList<BaseWidget>();
+		presetNameTextbox = new JTextField();
+		
 		
 		BasicSettings basicSettingsWidget = new BasicSettings(activeDevice);
 		EffectSettings effectSettingsWidget = new EffectSettings(activeDevice);
@@ -54,6 +57,7 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		
 		//Adding widgets to the window
 		add(devicesCB);
+		add(presetNameTextbox);
 		add(basicSettingsWidget);
 		add(effectSettingsWidget);
 		
@@ -63,6 +67,7 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		refreshDevicesCombobox();
 		
 		pack();
+		this.setSize(800, 520);
 	}
 	
 	protected void raiseActiveDeviceChanged()
@@ -108,14 +113,18 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 
 	@Override
 	public void presetsSynchronized(Device dev) {
+		presetNameTextbox.setText(dev.getActivePreset().getName());
 		for(BaseWidget widget : widgets)
 		{
-			widget.settingsChanged(dev);
+			widget.presetsSynchronized(dev);
 		}
 	}
 
 	@Override
 	public void parameterChanged(Device dev, BaseParameter p, int value) {
-		presetsSynchronized(dev);
+		for(BaseWidget widget : widgets)
+		{
+			widget.parameterChanged(dev,p,value);
+		}
 	}
 }

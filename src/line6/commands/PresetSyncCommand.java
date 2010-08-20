@@ -46,88 +46,67 @@ public class PresetSyncCommand extends Command {
 		// TODO Auto-generated method stub
 		if(m.getLength() == length())
 		{
+			
 			//settings.setId(m.getMessage()[PRESET_ID_POSITION]);
 			//settings.setValue(ParameterSwitch.Eq, m.getMessage()[EQ_STATUS_POSITION] * Global.EffectOn.id());
 			byte header [] = new byte[7];
 			byte presetName [] = new byte[32];
 			ByteArrayInputStream stream = new ByteArrayInputStream(m.getMessage());
+			SysexParser parser = new SysexParser(stream,settings);
 			try {
 				stream.read(header);
 				//Preset id
 				settings.setId(stream.read()+1);
 				//We dont know what is there yet
 				stream.skip(2);
-				switchProperty(ParameterSwitch.Distortion, stream);
+				parser.switchProperty(ParameterSwitch.Distortion);
 				stream.skip(2);
-				switchProperty(ParameterSwitch.Drive, stream);
-				switchProperty(ParameterSwitch.Eq, stream);
+				parser.switchProperty(ParameterSwitch.Drive);
+				parser.switchProperty(ParameterSwitch.Eq);
 				stream.skip(1);
-				switchProperty(ParameterSwitch.Delay, stream);//Delay switch
+				parser.switchProperty(ParameterSwitch.Delay);//Delay switch
 				stream.skip(5);
-				switchProperty(ParameterSwitch.NoiseGate, stream);
+				parser.switchProperty(ParameterSwitch.NoiseGate);
+				stream.skip(1);
+				parser.switchProperty(ParameterSwitch.Bright);
+				parser.shortIntProperty(Parameter.Amp);
 	
-				shortIntProperty(Parameter.Drive,stream);
-				stream.skip(6);
-				shortIntProperty(Parameter.Bass, stream);
-				shortIntProperty(Parameter.Mid, stream);
-				shortIntProperty(Parameter.Treble, stream);
-				shortIntProperty(Parameter.Presence,stream);
-				shortIntProperty(Parameter.ChannelVolume,stream);
-				shortIntProperty(EffectParameter.NoiseGateThreshold, stream);
-				shortIntProperty(EffectParameter.NoiseGateDecay, stream);
-				stream.skip(48);
-				shortIntProperty(EffectParameter.ReverbDensity, stream);
-				shortIntProperty(Parameter.Reverb, stream);
-				stream.skip(22);
+				parser.shortIntProperty(Parameter.Drive);
+				stream.skip(2);
+				parser.shortIntProperty(Parameter.Bass);
+				parser.shortIntProperty(Parameter.Mid);
+				parser.shortIntProperty(Parameter.Treble);
+				parser.shortIntProperty(Parameter.Presence);
+				parser.shortIntProperty(Parameter.ChannelVolume);
+				parser.shortIntProperty(EffectParameter.NoiseGateThreshold);
+				parser.shortIntProperty(EffectParameter.NoiseGateDecay);
+				parser.shortIntProperty(EffectParameter.WahPosition);
+				parser.shortIntProperty(EffectParameter.WahBotFreq);
+				parser.shortIntProperty(EffectParameter.WahTopFreq);
+				stream.skip(13);
+				stream.skip(3);//Delay Coarse
+				parser.shortIntProperty(EffectParameter.DelayFine);
+				stream.skip(8);
+				parser.shortIntProperty(EffectParameter.DelayFeedback);
+				stream.skip(2);
+				parser.shortIntProperty(EffectParameter.DelayLevel);
+				stream.skip(3);
+				parser.switchProperty(ParameterSwitch.ReverbSpring);
+				parser.shortIntProperty(EffectParameter.ReverbDecay);
+				parser.shortIntProperty(EffectParameter.ReverbTone);
+				parser.shortIntProperty(EffectParameter.ReverbDiffusion);
+				parser.shortIntProperty(EffectParameter.ReverbDensity);
+				parser.shortIntProperty(Parameter.Reverb);
+				parser.shortIntProperty(Parameter.Cabinet);
+				stream.skip(20);
 				
 				stream.read(presetName);
-				settings.setName(parsePodString(presetName));
+				settings.setName(parser.parsePodString(presetName));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		return false;
 	}
-	private void shortIntProperty(BaseParameter p, ByteArrayInputStream stream) throws IOException
-	{
-		byte shortInt[] = new byte[2];
-		stream.read(shortInt);
-		settings.setValue(p, 2*parsePodShortInteger(shortInt));
-	}
-	private void switchProperty(BaseParameter p, ByteArrayInputStream stream) throws IOException
-	{
-		settings.setValue(p, stream.read()*Global.EffectOn.id());
-	}
-	public static int toPodShortInteger(int shortInt)
-	{
-		return (shortInt % 16) + (256*(shortInt/16));
-	}
 	
-	public static int parsePodShortInteger(byte shortInt[])
-	{
-		if(shortInt.length == 2) {
-			return shortInt[0]*16 + shortInt[1];
-		} else
-			return 0;
-	}
-	
-	public static String parsePodString(byte str[])
-	{
-		ByteArrayInputStream stream = new ByteArrayInputStream(str);
-		StringBuffer result = new StringBuffer();
-		byte character[] = new byte[2];
-		try
-		{
-			while(stream.available() >= 2)
-			{
-				stream.read(character);
-				result.append((char)parsePodShortInteger(character));
-			}
-		}
-		catch(IOException e)
-		{
-			System.out.println("Something wrong during parsing preset name");
-		}
-		return result.toString();
-	}
 }

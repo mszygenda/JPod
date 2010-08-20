@@ -7,9 +7,11 @@ package jpod.gui.widgets;
 import javax.swing.JComponent;
 
 import line6.Device;
+import line6.commands.BaseParameter;
 import line6.commands.Command;
+import line6.events.DeviceListener;
 
-public abstract class BaseWidget extends JComponent {
+public abstract class BaseWidget extends JComponent implements DeviceListener {
 	protected Device activeDevice;
 	
 	BaseWidget(Device dev)
@@ -37,5 +39,6 @@ public abstract class BaseWidget extends JComponent {
 	}
 	
 	abstract void activeDeviceChanged();
-	public abstract void settingsChanged(Device dev);
+	public abstract void presetsSynchronized(Device dev);
+	public abstract void parameterChanged(Device dev, BaseParameter p, int value);
 }

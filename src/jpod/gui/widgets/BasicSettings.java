@@ -117,7 +117,6 @@ public class BasicSettings extends BaseWidget {
 		}
 	}
 
-	@Override
 	public void settingsChanged(Device dev) {
 		BaseParameter amplifier = AmpModel.getValue(dev.getActivePreset().getValue(Parameter.Amp));
 		BaseParameter cabinet = Cabinet.getValue(dev.getActivePreset().getValue(Parameter.Cabinet));
@@ -125,6 +124,17 @@ public class BasicSettings extends BaseWidget {
 		ampModelCB.setSelectedItem(amplifier);
 		cabsCB.setSelectedItem(cabinet);
 		effectsCB.setSelectedItem(effect);
+	}
+
+	@Override
+	public void presetsSynchronized(Device dev) {
+		// TODO Auto-generated method stub
+		settingsChanged(dev);
+	}
+
+	@Override
+	public void parameterChanged(Device dev, BaseParameter p, int value) {
+		settingsChanged(dev);
 	}
 
 

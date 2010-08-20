@@ -21,9 +21,9 @@ public enum EffectParameter implements BaseParameter {
 	ReverbTone(39),
 	ReverbDiffusion(40),
 	ReverbDensity(41),
-	WahPosition(4),
-	WahBotFreq(44),
-	WahTopFreq(45),
+	WahPosition(4,127),
+	WahBotFreq(44,127),
+	WahTopFreq(45,127),
 	NoiseGateThreshold(23),
 	NoiseGateDecay(24);
 	
