@@ -20,6 +20,7 @@ import line6.commands.Parameter;
 import line6.commands.values.Effect;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -29,24 +30,19 @@ import javax.swing.event.ChangeListener;
 
 public class EffectSettings extends BaseWidget {
 	private ChangeListener eventListener;
-	Hashtable<BaseParameter,JSlider> widgets;
-	Hashtable<BaseParameter,JLabel> labels;
+	Hashtable<BaseParameter,Dial> widgets;
 	Hashtable<BaseParameter,JPanel> panels;
 	private Font panelFont;
 	
 	public EffectSettings(Device dev) {
 		super(dev);
-		setLayout(new GridLayout(4,2));
-		widgets = new Hashtable<BaseParameter,JSlider>();
-		labels = new Hashtable<BaseParameter,JLabel>();
+		setLayout(new GridLayout(3,2));
+		widgets = new Hashtable<BaseParameter,Dial>();
 		panels = new Hashtable<BaseParameter,JPanel>();
 		panelFont = new Font(null, Font.BOLD, 10);
 		
 		eventListener = new ParameterValueChangedEvent(); 
-		for(Effect e : Effect.values())
-		{
-			registerPanel(e);
-		}
+		
 		for(EffectParameter p : EffectParameter.values())
 		{
 			registerParameter(p);
@@ -55,83 +51,73 @@ public class EffectSettings extends BaseWidget {
 		{
 			registerParameter(p);
 		}
-		JPanel eqPanel = new JPanel();
-		eqPanel.setName("Equalizer");
-		eqPanel.setLayout(new GridLayout(4,4));
+		JPanel delayPanel = createPanel("Delay");
+		JPanel togglesPanel = createPanel("Toggles");
+		JPanel noiseGatePanel = createPanel("Noise gate");
+		JPanel reverbPanel = createPanel("Reverb");
+		JPanel effectPanel = createPanel("Effect");
+		JPanel wahPanel = createPanel("Wah-Wah");
+		JPanel eqPanel = createPanel("Equalizer");
 		
-		eqPanel.add(labels.get(Parameter.Drive));
-		eqPanel.add(labels.get(Parameter.Bass));
-		eqPanel.add(labels.get(Parameter.Mid));
-		eqPanel.add(labels.get(Parameter.Treble));
+		
+		eqPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
 		
 		eqPanel.add(widgets.get(Parameter.Drive));
 		eqPanel.add(widgets.get(Parameter.Bass));
 		eqPanel.add(widgets.get(Parameter.Mid));
 		eqPanel.add(widgets.get(Parameter.Treble));
 		
-		eqPanel.add(labels.get(Parameter.Effects));
-		eqPanel.add(labels.get(Parameter.Reverb));
-		eqPanel.add(labels.get(Parameter.ChannelVolume));
-		eqPanel.add(labels.get(Parameter.Volume));
-		
 		eqPanel.add(widgets.get(Parameter.Effects));
 		eqPanel.add(widgets.get(Parameter.Reverb));
 		eqPanel.add(widgets.get(Parameter.ChannelVolume));
 		eqPanel.add(widgets.get(Parameter.Volume));
 		
-		eqPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Equalizer"),
-                BorderFactory.createEmptyBorder(5,5,5,5)));
+	
+		delayPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
-		add(eqPanel);
-		
-		JPanel tmp = panels.get(Effect.Delay);
-		add(tmp);
-		
-		tmp.add(labels.get(EffectParameter.DelayCoarse));
-		tmp.add(labels.get(EffectParameter.DelayFeedback));
-		tmp.add(labels.get(EffectParameter.DelayFine));
-		tmp.add(labels.get(EffectParameter.Depth));
-		
-		tmp.add(widgets.get(EffectParameter.DelayCoarse));
-		tmp.add(widgets.get(EffectParameter.DelayFeedback));
-		tmp.add(widgets.get(EffectParameter.DelayFine));
-		tmp.add(widgets.get(EffectParameter.Depth));
-		
-		tmp = panels.get(Effect.Tremolo);
-		add(tmp);
-		
-		tmp.add(labels.get(EffectParameter.TremoloDepth));
-		tmp.add(labels.get(EffectParameter.TremoloSpeed));
-		tmp.add(labels.get(EffectParameter.Predelay));
-		tmp.add(labels.get(EffectParameter.Speed));
+		delayPanel.add(widgets.get(EffectParameter.DelayCoarse));
+		delayPanel.add(widgets.get(EffectParameter.DelayFeedback));
+		delayPanel.add(widgets.get(EffectParameter.DelayFine));
+		delayPanel.add(widgets.get(EffectParameter.Depth));
 		
 		
-		tmp.add(widgets.get(EffectParameter.TremoloDepth));
-		tmp.add(widgets.get(EffectParameter.TremoloSpeed));
-		tmp.add(widgets.get(EffectParameter.Predelay));
-		tmp.add(widgets.get(EffectParameter.Speed));
+		effectPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
-		tmp = panels.get(Effect.DelaySwell);
-		add(tmp);
+		effectPanel.add(widgets.get(EffectParameter.TremoloSpeed));
+		effectPanel.add(widgets.get(EffectParameter.TremoloDepth));
+		effectPanel.add(widgets.get(EffectParameter.Speed));
+		effectPanel.add(widgets.get(EffectParameter.Depth));
+		effectPanel.add(widgets.get(EffectParameter.Feedback));
+		effectPanel.add(widgets.get(EffectParameter.Predelay));
+		effectPanel.add(widgets.get(EffectParameter.SwellAttackTime));
 		
-		tmp.add(labels.get(EffectParameter.SwellAttackTime));
-		tmp.add(widgets.get(EffectParameter.SwellAttackTime));
+		noiseGatePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+	
+		noiseGatePanel.add(widgets.get(EffectParameter.NoiseGateThreshold));
+		noiseGatePanel.add(widgets.get(EffectParameter.NoiseGateDecay));
 		
-		JPanel wahPanel = new JPanel();
-		wahPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Wah"),
-                BorderFactory.createEmptyBorder(5,5,5,5)));
-		wahPanel.setLayout(new GridLayout(2,3));
 		
-		wahPanel.add(labels.get(EffectParameter.WahBotFreq));
-		wahPanel.add(labels.get(EffectParameter.WahPosition));
-		wahPanel.add(labels.get(EffectParameter.WahTopFreq));
+		reverbPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		
+		reverbPanel.add(widgets.get(EffectParameter.ReverbDecay));
+		reverbPanel.add(widgets.get(EffectParameter.ReverbDensity));
+		reverbPanel.add(widgets.get(EffectParameter.ReverbDiffusion));
+		reverbPanel.add(widgets.get(EffectParameter.ReverbTone));
+	
+		wahPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		wahPanel.add(widgets.get(EffectParameter.WahBotFreq));
 		wahPanel.add(widgets.get(EffectParameter.WahPosition));
 		wahPanel.add(widgets.get(EffectParameter.WahTopFreq));
 		
+		add(eqPanel);
+		add(noiseGatePanel);
+		add(togglesPanel);
+		add(reverbPanel);
+		add(delayPanel);
+		add(effectPanel);
 		add(wahPanel);
 		
 	}
@@ -142,29 +128,37 @@ public class EffectSettings extends BaseWidget {
 		
 	}
 	
-	private void registerPanel(BaseParameter p)
+	private JPanel createPanel(String name)
 	{
 		JPanel tmp = new JPanel();
-		tmp.setLayout(new GridLayout(2,4));
-		
 		tmp.setBorder(BorderFactory.createCompoundBorder(
-                 BorderFactory.createTitledBorder(p.toString()),
+                 BorderFactory.createTitledBorder(name),
                  BorderFactory.createEmptyBorder(5,5,5,5)));
-		panels.put(p, tmp);
+		return tmp;
+	}
+	
+	public void showHideEffectsWidgets(boolean visible)
+	{
+		for(EffectParameter p : EffectParameter.values())
+		{
+			if(widgets.containsKey(p))
+			{
+				widgets.get(p).setVisible(visible);
+			}
+		}
 	}
 	
 	private void registerParameter(BaseParameter p)
 	{
-		JSlider tmp = new JSlider();
-		JLabel tmpLabel = new JLabel();
-		
-		tmp.setToolTipText(p.toString());
-		tmpLabel.setText(p.toString());
-		tmp.setMaximum(p.getMaxValue());
+		registerParameter(p, true);
+	}
+	
+	private void registerParameter(BaseParameter p, boolean visible)
+	{
+		Dial tmp = new Dial(p.toString(),p.getMaxValue());
 		tmp.addChangeListener(eventListener);
-		
+		tmp.setVisible(visible);
 		widgets.put(p, tmp);
-		labels.put(p, tmpLabel);
 	}
 
 	class ParameterValueChangedEvent implements ChangeListener
@@ -174,7 +168,7 @@ public class EffectSettings extends BaseWidget {
 		public void stateChanged(ChangeEvent arg) {
 			Enumeration en = widgets.keys();
 			BaseParameter effect = null;
-			JSlider source = (JSlider)arg.getSource();
+			Dial source = (Dial)arg.getSource();
 			while(en.hasMoreElements())
 			{
 				effect = (BaseParameter)en.nextElement();
@@ -193,7 +187,6 @@ public class EffectSettings extends BaseWidget {
 	public void presetsSynchronized(Device dev) {
 		DeviceSettings activePreset = dev.getActivePreset();
 		BaseParameter p;
-		System.out.println("Hello");
 		for(Enumeration<BaseParameter> parameters = activePreset.getParameters(); parameters.hasMoreElements();)
 		{
 			p = parameters.nextElement();
@@ -203,9 +196,34 @@ public class EffectSettings extends BaseWidget {
 
 	@Override
 	public void parameterChanged(Device dev, BaseParameter p, int value) {
-		if(widgets.containsKey(p))
+		if(p.id() != -1 && widgets.containsKey(p))
 		{
-			widgets.get(p).setValue(value);
+			if(value <= p.getMaxValue() && value >= 0)
+				widgets.get(p).setValue(value);
+			else
+				System.out.printf("Wrong value for %s, %d\n",p.toString(),value);
+		}
+		if(p == Parameter.Effect)
+		{
+			BaseParameter e = Effect.getValue(value);
+			if(e instanceof Effect)
+			{
+				Effect effect = (Effect)e;
+				showHideEffectsWidgets(true);
+				for(BaseParameter effectParameter : effect.forbiddenParameters())
+				{
+					showHideWidget(effectParameter,false);
+				}
+			}
 		}
 	}
+	
+	public void showHideWidget(BaseParameter p, boolean visible)
+	{
+		if(widgets.containsKey(p))
+		{
+			widgets.get(p).setVisible(visible);
+		}
+	}
+	
 }

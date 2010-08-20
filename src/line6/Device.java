@@ -160,6 +160,7 @@ public class Device implements CommandArrived {
 		{
 			try {
 				midiDeviceInput.getReceiver().send(c.toMidiMessage(),-1);
+				commandArrived(c);
 			} catch (MidiUnavailableException e) {
 				return false;
 			}

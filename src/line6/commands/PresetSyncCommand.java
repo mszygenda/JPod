@@ -58,21 +58,18 @@ public class PresetSyncCommand extends Command {
 				//Preset id
 				settings.setId(stream.read()+1);
 				//We dont know what is there yet
-				stream.skip(2);
+				stream.skip(1);
 				parser.switchProperty(ParameterSwitch.Distortion);
-				stream.skip(2);
 				parser.switchProperty(ParameterSwitch.Drive);
 				parser.switchProperty(ParameterSwitch.Eq);
-				stream.skip(1);
 				parser.switchProperty(ParameterSwitch.Delay);//Delay switch
-				stream.skip(5);
+				stream.skip(4);
 				parser.switchProperty(ParameterSwitch.NoiseGate);
-				stream.skip(1);
 				parser.switchProperty(ParameterSwitch.Bright);
+				
 				parser.shortIntProperty(Parameter.Amp);
-	
 				parser.shortIntProperty(Parameter.Drive);
-				stream.skip(2);
+				parser.shortIntProperty(Parameter.Drive2);
 				parser.shortIntProperty(Parameter.Bass);
 				parser.shortIntProperty(Parameter.Mid);
 				parser.shortIntProperty(Parameter.Treble);
@@ -90,7 +87,7 @@ public class PresetSyncCommand extends Command {
 				parser.shortIntProperty(EffectParameter.DelayFeedback);
 				stream.skip(2);
 				parser.shortIntProperty(EffectParameter.DelayLevel);
-				stream.skip(3);
+				stream.skip(2);
 				parser.switchProperty(ParameterSwitch.ReverbSpring);
 				parser.shortIntProperty(EffectParameter.ReverbDecay);
 				parser.shortIntProperty(EffectParameter.ReverbTone);
@@ -98,7 +95,9 @@ public class PresetSyncCommand extends Command {
 				parser.shortIntProperty(EffectParameter.ReverbDensity);
 				parser.shortIntProperty(Parameter.Reverb);
 				parser.shortIntProperty(Parameter.Cabinet);
-				stream.skip(20);
+				stream.skip(2);
+				parser.shortIntProperty(Parameter.Effect);
+				stream.skip(16);
 				
 				stream.read(presetName);
 				settings.setName(parser.parsePodString(presetName));

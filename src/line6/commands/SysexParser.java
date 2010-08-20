@@ -25,7 +25,9 @@ public class SysexParser {
 	}
 	public void switchProperty(BaseParameter p) throws IOException
 	{
-		settings.setValue(p, stream.read()*Global.EffectOn.id());
+		byte shortInt[] = new byte[2];
+		stream.read(shortInt);
+		settings.setValue(p, parsePodShortInteger(shortInt)*Global.EffectOn.id());
 	}
 	public static int toPodShortInteger(int shortInt)
 	{

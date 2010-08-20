@@ -12,6 +12,7 @@ public enum Parameter implements BaseParameter {
 	Delay(34),
 	Effects(1),
 	Drive(13),
+	Drive2(20),
 	Bass(14),
 	Mid(15),
 	Treble(16),
