@@ -208,7 +208,7 @@ public class Device implements CommandArrived {
 				sendCommand(c);
 				//Wait for preset
 				try {
-					this.sleep(80,0);
+					this.sleep(150,0);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -226,6 +226,10 @@ public class Device implements CommandArrived {
 				{
 					listener.presetsSynchronized(Device.this);
 				}
+			}
+			else
+			{
+				System.out.printf("Device is not fully synchronized. Received %d presets\n",presets.size());
 			}
 		}
 		
