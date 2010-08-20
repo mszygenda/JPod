@@ -6,7 +6,6 @@ import java.util.Hashtable;
 import line6.DeviceSettings;
 import line6.commands.values.Global;
 
-import com.sun.xml.internal.ws.util.ByteArrayBuffer;
 
 public class SysexParser {
 	private ByteArrayInputStream stream;
