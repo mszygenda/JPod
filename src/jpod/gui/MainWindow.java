@@ -81,6 +81,7 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		refreshDevicesCombobox();
 		
 		pack();
+		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 	}
 	
 	protected void raiseActiveDeviceChanged()

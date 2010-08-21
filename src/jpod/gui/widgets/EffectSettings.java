@@ -6,6 +6,8 @@ package jpod.gui.widgets;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import java.util.Enumeration;
@@ -25,6 +27,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -37,7 +40,12 @@ public class EffectSettings extends BaseWidget {
 	
 	public EffectSettings(Device dev) {
 		super(dev);
-		setLayout(new GridLayout(3,2));
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridy = 0;
+		c.weighty = 1;
+		c.fill = SwingConstants.VERTICAL;
+		
 		widgets = new Hashtable<BaseParameter,ParameterWidget>();
 		panels = new Hashtable<BaseParameter,JPanel>();
 		panelFont = new Font(null, Font.BOLD, 10);
@@ -89,8 +97,9 @@ public class EffectSettings extends BaseWidget {
 		delayPanel.add(widgets.get(EffectParameter.Depth));
 		
 		
-		//effectPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		effectPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		effectPanel.add(widgets.get(ParameterToggle.EnableEffect));
+		effectPanel.add(widgets.get(ParameterToggle.RotarySpeed));
 		effectPanel.add(widgets.get(EffectParameter.TremoloSpeed));
 		effectPanel.add(widgets.get(EffectParameter.TremoloDepth));
 		effectPanel.add(widgets.get(EffectParameter.Speed));
@@ -99,46 +108,71 @@ public class EffectSettings extends BaseWidget {
 		effectPanel.add(widgets.get(EffectParameter.Predelay));
 		effectPanel.add(widgets.get(EffectParameter.SwellAttackTime));
 		effectPanel.add(widgets.get(EffectParameter.SlowSpeed));
-		effectPanel.add(widgets.get(ParameterToggle.RotarySpeed));
 		effectPanel.add(widgets.get(EffectParameter.FastSpeed));
 		
-		noiseGatePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		noiseGatePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 	
 		noiseGatePanel.add(widgets.get(ParameterToggle.NoiseGate));
 		noiseGatePanel.add(widgets.get(EffectParameter.NoiseGateThreshold));
 		noiseGatePanel.add(widgets.get(EffectParameter.NoiseGateDecay));
 		
 		
-		reverbPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		reverbPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
 		
 		reverbPanel.add(widgets.get(ParameterToggle.ReverbEnable));
+		reverbPanel.add(widgets.get(ParameterToggle.ReverbSpringRoom));
 		reverbPanel.add(widgets.get(EffectParameter.ReverbDecay));
 		reverbPanel.add(widgets.get(EffectParameter.ReverbDensity));
 		reverbPanel.add(widgets.get(EffectParameter.ReverbDiffusion));
 		reverbPanel.add(widgets.get(EffectParameter.ReverbTone));
-		reverbPanel.add(widgets.get(ParameterToggle.ReverbSpringRoom));
-	
 		
 		togglesPanel.add(widgets.get(ParameterToggle.Distortion));
 		togglesPanel.add(widgets.get(ParameterToggle.Drive));
 		togglesPanel.add(widgets.get(ParameterToggle.Eq));
 		togglesPanel.add(widgets.get(ParameterToggle.Bright));
 		
-		wahPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		wahPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
 		wahPanel.add(widgets.get(ParameterToggle.Wah));
 		wahPanel.add(widgets.get(EffectParameter.WahBotFreq));
 		wahPanel.add(widgets.get(EffectParameter.WahPosition));
 		wahPanel.add(widgets.get(EffectParameter.WahTopFreq));
 		
-		add(eqPanel);
-		add(noiseGatePanel);
-		add(togglesPanel);
-		add(reverbPanel);
-		add(delayPanel);
-		add(effectPanel);
-		add(wahPanel);
+		c.weighty = 1;
+		c.weightx = 10;
+		c.gridwidth = 3;
+		add(eqPanel,c);
+		c.gridwidth = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.gridy = 1;
+		add(noiseGatePanel,c);
+		c.gridx = 1;
+		c.weightx = 1;
+		add(togglesPanel,c);
+		c.gridx = 2;
+		c.gridy = 1;
+		c.weightx = 5;
+		add(reverbPanel,c);
+		c.gridy = 2;
+		c.gridx = 0;
+		c.gridwidth = 2;
+		c.weightx = 5;		
+		add(delayPanel,c);
+		
+		c.gridx = 2;
+		c.weightx = 1;
+		c.gridwidth = 1;
+		c.gridheight = 2;
+		add(effectPanel,c);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 2;
+		c.gridheight = 1;
+		c.weightx = 5;
+		add(wahPanel,c);
 		
 	}
 
@@ -161,10 +195,11 @@ public class EffectSettings extends BaseWidget {
 	{
 		for(EffectParameter p : EffectParameter.values())
 		{
-			if(widgets.containsKey(p))
-			{
-				widgets.get(p).setVisible(visible);
-			}
+			showHideWidget(p,visible);
+		}
+		for(ParameterToggle p : ParameterToggle.values())
+		{
+			showHideWidget(p,visible);
 		}
 	}
 	
@@ -202,7 +237,6 @@ public class EffectSettings extends BaseWidget {
 					effect = (BaseParameter)en.nextElement();
 					if(widgets.get(effect) == source)
 					{
-						System.out.printf("Efekt %s chce ustawic na : %d",effect.toString(),source.getValue());
 						ChangeParameterCommand command = null;
 						if(effect != null)
 							command = new ChangeParameterCommand(effect, source.getValue());
