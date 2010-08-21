@@ -27,6 +27,7 @@ public class ChangeParameterCommand extends Command {
 	{
 		parameter = p;
 		value = _value;
+		System.out.printf("ChangeParameterCommand %s\n", p.toString());
 	}
 	public ChangeParameterCommand(int _parameterId, int _value)
 	{

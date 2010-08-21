@@ -17,6 +17,7 @@ import line6.commands.BaseParameter;
 import line6.commands.ChangeParameterCommand;
 import line6.commands.EffectParameter;
 import line6.commands.Parameter;
+import line6.commands.ParameterToggle;
 import line6.commands.values.Effect;
 
 import javax.swing.BorderFactory;
@@ -30,19 +31,23 @@ import javax.swing.event.ChangeListener;
 
 public class EffectSettings extends BaseWidget {
 	private ChangeListener eventListener;
-	Hashtable<BaseParameter,Dial> widgets;
+	Hashtable<BaseParameter,ParameterWidget> widgets;
 	Hashtable<BaseParameter,JPanel> panels;
 	private Font panelFont;
 	
 	public EffectSettings(Device dev) {
 		super(dev);
 		setLayout(new GridLayout(3,2));
-		widgets = new Hashtable<BaseParameter,Dial>();
+		widgets = new Hashtable<BaseParameter,ParameterWidget>();
 		panels = new Hashtable<BaseParameter,JPanel>();
 		panelFont = new Font(null, Font.BOLD, 10);
 		
 		eventListener = new ParameterValueChangedEvent(); 
 		
+		for(ParameterToggle p : ParameterToggle.values())
+		{
+			registerParameterToggle(p);
+		}
 		for(EffectParameter p : EffectParameter.values())
 		{
 			registerParameter(p);
@@ -64,6 +69,7 @@ public class EffectSettings extends BaseWidget {
 		
 		
 		eqPanel.add(widgets.get(Parameter.Drive));
+		eqPanel.add(widgets.get(Parameter.Drive2));
 		eqPanel.add(widgets.get(Parameter.Bass));
 		eqPanel.add(widgets.get(Parameter.Mid));
 		eqPanel.add(widgets.get(Parameter.Treble));
@@ -76,6 +82,7 @@ public class EffectSettings extends BaseWidget {
 	
 		delayPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
+		delayPanel.add(widgets.get(ParameterToggle.Delay));
 		delayPanel.add(widgets.get(EffectParameter.DelayCoarse));
 		delayPanel.add(widgets.get(EffectParameter.DelayFeedback));
 		delayPanel.add(widgets.get(EffectParameter.DelayFine));
@@ -83,7 +90,7 @@ public class EffectSettings extends BaseWidget {
 		
 		
 		//effectPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		
+		effectPanel.add(widgets.get(ParameterToggle.EnableEffect));
 		effectPanel.add(widgets.get(EffectParameter.TremoloSpeed));
 		effectPanel.add(widgets.get(EffectParameter.TremoloDepth));
 		effectPanel.add(widgets.get(EffectParameter.Speed));
@@ -91,11 +98,13 @@ public class EffectSettings extends BaseWidget {
 		effectPanel.add(widgets.get(EffectParameter.Feedback));
 		effectPanel.add(widgets.get(EffectParameter.Predelay));
 		effectPanel.add(widgets.get(EffectParameter.SwellAttackTime));
-		effectPanel.add(widgets.get(EffectParameter.FastSpeed));
 		effectPanel.add(widgets.get(EffectParameter.SlowSpeed));
+		effectPanel.add(widgets.get(ParameterToggle.RotarySpeed));
+		effectPanel.add(widgets.get(EffectParameter.FastSpeed));
 		
 		noiseGatePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 	
+		noiseGatePanel.add(widgets.get(ParameterToggle.NoiseGate));
 		noiseGatePanel.add(widgets.get(EffectParameter.NoiseGateThreshold));
 		noiseGatePanel.add(widgets.get(EffectParameter.NoiseGateDecay));
 		
@@ -103,11 +112,19 @@ public class EffectSettings extends BaseWidget {
 		reverbPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		
+		reverbPanel.add(widgets.get(ParameterToggle.ReverbEnable));
 		reverbPanel.add(widgets.get(EffectParameter.ReverbDecay));
 		reverbPanel.add(widgets.get(EffectParameter.ReverbDensity));
 		reverbPanel.add(widgets.get(EffectParameter.ReverbDiffusion));
 		reverbPanel.add(widgets.get(EffectParameter.ReverbTone));
+		reverbPanel.add(widgets.get(ParameterToggle.ReverbSpringRoom));
 	
+		
+		togglesPanel.add(widgets.get(ParameterToggle.Distortion));
+		togglesPanel.add(widgets.get(ParameterToggle.Drive));
+		togglesPanel.add(widgets.get(ParameterToggle.Eq));
+		togglesPanel.add(widgets.get(ParameterToggle.Bright));
+		
 		wahPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		wahPanel.add(widgets.get(EffectParameter.WahBotFreq));
@@ -152,17 +169,23 @@ public class EffectSettings extends BaseWidget {
 	
 	private void registerParameter(BaseParameter p)
 	{
-		registerParameter(p, true);
+		registerParameter(p, true, ParameterWidget.DIAL);
 	}
 	
-	private void registerParameter(BaseParameter p, boolean visible)
+	
+	private void registerParameter(BaseParameter p, boolean visible, int type)
 	{
-		Dial tmp = new Dial(p.toString(),p.getMaxValue());
+		ParameterWidget tmp = new ParameterWidget(p.toString(),p.getMaxValue(),type);
 		tmp.addChangeListener(eventListener);
 		tmp.setVisible(visible);
 		widgets.put(p, tmp);
 	}
 
+	private void registerParameterToggle(BaseParameter p)
+	{
+		registerParameter(p,true,ParameterWidget.TOGGLE);
+	}
+	
 	class ParameterValueChangedEvent implements ChangeListener
 	{
 
@@ -170,19 +193,23 @@ public class EffectSettings extends BaseWidget {
 		public void stateChanged(ChangeEvent arg) {
 			Enumeration en = widgets.keys();
 			BaseParameter effect = null;
-			Dial source = (Dial)arg.getSource();
-			while(en.hasMoreElements())
+			ParameterWidget source = (ParameterWidget)arg.getSource();
+			if(source != null)
 			{
-				effect = (BaseParameter)en.nextElement();
-				if(widgets.get(effect) == source)
-					break;
+				while(en.hasMoreElements())
+				{
+					effect = (BaseParameter)en.nextElement();
+					if(widgets.get(effect) == source)
+					{
+						ChangeParameterCommand command = null;
+						if(effect != null)
+							command = new ChangeParameterCommand(effect, source.getValue());
+						sendCommand(command);
+						break;
+					}
+				}
 			}
-			ChangeParameterCommand command = null;
-			if(effect != null)
-				command = new ChangeParameterCommand(effect.id(),(effect.getMaxValue()/100) * source.getValue());
-			sendCommand(command);
 		}
-		
 	}
 
 	@Override

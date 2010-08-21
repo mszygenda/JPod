@@ -27,7 +27,7 @@ public class SysexParser {
 		stream.read(shortInt);
 		settings.setValue(p, factor*parsePodShortInteger(shortInt));
 	}
-	public void switchProperty(BaseParameter p) throws IOException
+	public void toggleProperty(BaseParameter p) throws IOException
 	{
 		byte shortInt[] = new byte[2];
 		stream.read(shortInt);

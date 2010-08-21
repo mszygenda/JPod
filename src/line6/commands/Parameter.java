@@ -4,6 +4,7 @@
  */
 package line6.commands;
 
+import line6.Misc;
 import line6.commands.values.*;
 
 public enum Parameter implements BaseParameter {
@@ -60,7 +61,7 @@ public enum Parameter implements BaseParameter {
 	}
 	public String toString()
 	{
-		return super.toString();
+		return Misc.splitByUppercase(super.toString());
 	}
 	@Override
 	public int id() {

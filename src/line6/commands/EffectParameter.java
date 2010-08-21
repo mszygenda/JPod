@@ -4,17 +4,19 @@
  */
 package line6.commands;
 
+import line6.Misc;
+
 public enum EffectParameter implements BaseParameter {
 	
-	Depth(50),
-	Speed(51),
-	Feedback(53),
-	Predelay(54),
+	Depth(50,127),
+	Speed(51,127),
+	Feedback(53,127),
+	Predelay(54,127),
 	SwellAttackTime(49),
-	TremoloSpeed(58),
-	TremoloDepth(61),
-	DelayCoarse(30),
-	DelayFine(62),
+	TremoloSpeed(58,127),
+	TremoloDepth(59,127),
+	DelayCoarse(30,127),
+	DelayFine(62,127),
 	DelayFeedback(32),
 	DelayLevel(34),
 	ReverbDecay(38),
@@ -24,10 +26,10 @@ public enum EffectParameter implements BaseParameter {
 	WahPosition(4,127),
 	WahBotFreq(44,127),
 	WahTopFreq(45,127),
-	NoiseGateThreshold(23),
+	NoiseGateThreshold(23,127),
 	NoiseGateDecay(24),
 	SlowSpeed(57),
-	FastSpeed(56);
+	FastSpeed(56,122);
 	
 	private int effect_parameter_id;
 	private int maxValue;
@@ -51,5 +53,10 @@ public enum EffectParameter implements BaseParameter {
 	@Override
 	public int getMaxValue() {
 		return maxValue;
+	}
+	
+	public String toString()
+	{
+		return Misc.splitByUppercase(super.toString());
 	}
 }

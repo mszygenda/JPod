@@ -48,7 +48,7 @@ public class PresetSyncCommand extends Command {
 		{
 			
 			//settings.setId(m.getMessage()[PRESET_ID_POSITION]);
-			//settings.setValue(ParameterSwitch.Eq, m.getMessage()[EQ_STATUS_POSITION] * Global.EffectOn.id());
+			//settings.setValue(ParameterToggle.Eq, m.getMessage()[EQ_STATUS_POSITION] * Global.EffectOn.id());
 			byte header [] = new byte[7];
 			byte presetName [] = new byte[32];
 			ByteArrayInputStream stream = new ByteArrayInputStream(m.getMessage());
@@ -59,13 +59,13 @@ public class PresetSyncCommand extends Command {
 				settings.setId(stream.read()+1);
 				//We dont know what is there yet
 				stream.skip(1);
-				parser.switchProperty(ParameterSwitch.Distortion);
-				parser.switchProperty(ParameterSwitch.Drive);
-				parser.switchProperty(ParameterSwitch.Eq);
-				parser.switchProperty(ParameterSwitch.Delay);//Delay switch
+				parser.toggleProperty(ParameterToggle.Distortion);
+				parser.toggleProperty(ParameterToggle.Drive);
+				parser.toggleProperty(ParameterToggle.Eq);
+				parser.toggleProperty(ParameterToggle.Delay);//Delay switch
 				stream.skip(4);
-				parser.switchProperty(ParameterSwitch.NoiseGate);
-				parser.switchProperty(ParameterSwitch.Bright);
+				parser.toggleProperty(ParameterToggle.NoiseGate);
+				parser.toggleProperty(ParameterToggle.Bright);
 				
 				parser.shortIntProperty(Parameter.Amp,1);
 				parser.shortIntProperty(Parameter.Drive);
@@ -88,7 +88,7 @@ public class PresetSyncCommand extends Command {
 				stream.skip(2);
 				parser.shortIntProperty(EffectParameter.DelayLevel);
 				stream.skip(2);
-				parser.switchProperty(ParameterSwitch.ReverbSpring);
+				parser.toggleProperty(ParameterToggle.ReverbSpringRoom);
 				parser.shortIntProperty(EffectParameter.ReverbDecay);
 				parser.shortIntProperty(EffectParameter.ReverbTone);
 				parser.shortIntProperty(EffectParameter.ReverbDiffusion);
