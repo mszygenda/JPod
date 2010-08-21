@@ -127,6 +127,7 @@ public class EffectSettings extends BaseWidget {
 		
 		wahPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
+		wahPanel.add(widgets.get(ParameterToggle.Wah));
 		wahPanel.add(widgets.get(EffectParameter.WahBotFreq));
 		wahPanel.add(widgets.get(EffectParameter.WahPosition));
 		wahPanel.add(widgets.get(EffectParameter.WahTopFreq));
@@ -201,6 +202,7 @@ public class EffectSettings extends BaseWidget {
 					effect = (BaseParameter)en.nextElement();
 					if(widgets.get(effect) == source)
 					{
+						System.out.printf("Efekt %s chce ustawic na : %d",effect.toString(),source.getValue());
 						ChangeParameterCommand command = null;
 						if(effect != null)
 							command = new ChangeParameterCommand(effect, source.getValue());

@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
@@ -19,7 +20,7 @@ public class ParameterWidget extends JComponent implements ChangeListener {
 	private JSlider slider;
 	private ArrayList<ChangeListener> listeners;
 	private int max;
-	private JToggleButton toggle;
+	private JCheckBox toggle;
 	private int type;
 	
 	public static final int DIAL = 0;
@@ -50,14 +51,15 @@ public class ParameterWidget extends JComponent implements ChangeListener {
 			slider.setOrientation(SwingConstants.HORIZONTAL);
 			slider.addChangeListener(this);
 			add(slider);
+			add(nameLabel);
 		}
 		else
 		{
-			toggle = new JToggleButton();
+			toggle = new JCheckBox(name);
 			toggle.addChangeListener(this);
 			add(toggle);
 		}
-		add(nameLabel);
+		
 	}
 	
 	public void addChangeListener(ChangeListener l)
@@ -70,7 +72,7 @@ public class ParameterWidget extends JComponent implements ChangeListener {
 		if(type == DIAL)
 			slider.setValue(newVal);
 		else
-			toggle.getModel().setPressed(newVal > 0);
+			toggle.getModel().setSelected(newVal > 0);
 	}
 	
 	public int getValue()
@@ -79,7 +81,7 @@ public class ParameterWidget extends JComponent implements ChangeListener {
 			return slider.getValue();
 		else
 		{
-			return toggle.getModel().isPressed() ? max : Global.EffectOff.id();
+			return toggle.getModel().isSelected() ? max : Global.EffectOff.id();
 		}
 	}
 
