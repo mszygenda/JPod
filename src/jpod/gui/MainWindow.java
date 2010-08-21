@@ -1,4 +1,7 @@
 package jpod.gui;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +41,7 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		super("JPod");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.Y_AXIS));
+		setLayout(new GridBagLayout());
 		activeDevice = null;
 		widgets = new ArrayList<BaseWidget>();
 		presetNameTextbox = new JTextField();
@@ -55,11 +58,22 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		//Creating widgets
 		devicesCB = new JComboBox();
 		
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridy = 0;
+		c.weighty = 1;
+		c.fill = SwingConstants.VERTICAL;
 		//Adding widgets to the window
-		add(devicesCB);
-		add(presetNameTextbox);
-		add(basicSettingsWidget);
-		add(effectSettingsWidget);
+		add(devicesCB,c);
+		c.gridy = 1;
+		c.weighty = 1;
+		add(presetNameTextbox,c);
+		c.gridy = 2;
+		c.weighty = 1;
+		add(basicSettingsWidget,c);
+		c.gridy = 3;
+		c.weighty = 100;
+		c.weightx = 20;
+		add(effectSettingsWidget,c);
 		
 		//post configuration
 		
@@ -75,10 +89,11 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		{
 			widget.setActiveDevice(activeDevice);
 		}
-		if(activeDevice != null)
+		if(activeDevice != null && activeDevice.isInitialized())
 		{
 			activeDevice.addEventListener(this);
 			activeDevice.synchronize();
+			setTitle("JPod - Synchronizing device, please wait");
 		}
 	}
 	
@@ -113,6 +128,7 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 	@Override
 	public void presetsSynchronized(Device dev) {
 		presetNameTextbox.setText(dev.getActivePreset().getName());
+		setTitle("JPod - Synchronized");
 		for(BaseWidget widget : widgets)
 		{
 			widget.presetsSynchronized(dev);

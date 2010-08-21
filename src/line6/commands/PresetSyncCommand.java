@@ -67,7 +67,7 @@ public class PresetSyncCommand extends Command {
 				parser.switchProperty(ParameterSwitch.NoiseGate);
 				parser.switchProperty(ParameterSwitch.Bright);
 				
-				parser.shortIntProperty(Parameter.Amp);
+				parser.shortIntProperty(Parameter.Amp,1);
 				parser.shortIntProperty(Parameter.Drive);
 				parser.shortIntProperty(Parameter.Drive2);
 				parser.shortIntProperty(Parameter.Bass);
@@ -77,9 +77,9 @@ public class PresetSyncCommand extends Command {
 				parser.shortIntProperty(Parameter.ChannelVolume);
 				parser.shortIntProperty(EffectParameter.NoiseGateThreshold);
 				parser.shortIntProperty(EffectParameter.NoiseGateDecay);
-				parser.shortIntProperty(EffectParameter.WahPosition);
-				parser.shortIntProperty(EffectParameter.WahBotFreq);
-				parser.shortIntProperty(EffectParameter.WahTopFreq);
+				parser.shortIntProperty(EffectParameter.WahPosition,1);
+				parser.shortIntProperty(EffectParameter.WahBotFreq,1);
+				parser.shortIntProperty(EffectParameter.WahTopFreq,1);
 				stream.skip(13);
 				stream.skip(3);//Delay Coarse
 				parser.shortIntProperty(EffectParameter.DelayFine);
@@ -94,9 +94,9 @@ public class PresetSyncCommand extends Command {
 				parser.shortIntProperty(EffectParameter.ReverbDiffusion);
 				parser.shortIntProperty(EffectParameter.ReverbDensity);
 				parser.shortIntProperty(Parameter.Reverb);
-				parser.shortIntProperty(Parameter.Cabinet);
+				parser.shortIntProperty(Parameter.Cabinet,1);
 				stream.skip(2);
-				parser.shortIntProperty(Parameter.Effect);
+				parser.shortIntProperty(Parameter.Effect,1);
 				stream.skip(16);
 				
 				stream.read(presetName);

@@ -82,7 +82,7 @@ public class EffectSettings extends BaseWidget {
 		delayPanel.add(widgets.get(EffectParameter.Depth));
 		
 		
-		effectPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		//effectPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		effectPanel.add(widgets.get(EffectParameter.TremoloSpeed));
 		effectPanel.add(widgets.get(EffectParameter.TremoloDepth));
@@ -91,6 +91,8 @@ public class EffectSettings extends BaseWidget {
 		effectPanel.add(widgets.get(EffectParameter.Feedback));
 		effectPanel.add(widgets.get(EffectParameter.Predelay));
 		effectPanel.add(widgets.get(EffectParameter.SwellAttackTime));
+		effectPanel.add(widgets.get(EffectParameter.FastSpeed));
+		effectPanel.add(widgets.get(EffectParameter.SlowSpeed));
 		
 		noiseGatePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 	

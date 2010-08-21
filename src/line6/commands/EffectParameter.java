@@ -25,7 +25,9 @@ public enum EffectParameter implements BaseParameter {
 	WahBotFreq(44,127),
 	WahTopFreq(45,127),
 	NoiseGateThreshold(23),
-	NoiseGateDecay(24);
+	NoiseGateDecay(24),
+	SlowSpeed(57),
+	FastSpeed(56);
 	
 	private int effect_parameter_id;
 	private int maxValue;
