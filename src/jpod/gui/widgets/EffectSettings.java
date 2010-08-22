@@ -211,7 +211,19 @@ public class EffectSettings extends BaseWidget {
 	
 	private void registerParameter(BaseParameter p, boolean visible, int type)
 	{
-		ParameterWidget tmp = new ParameterWidget(p.toString(),p.getMaxValue(),type);
+		ParameterWidget tmp;
+		switch(type)
+		{
+		
+		case ParameterWidget.TOGGLE:
+		
+			tmp = new ParameterToggleWidget(p);
+			break;	
+		case ParameterWidget.DIAL:
+		default:
+			tmp = new ParameterDialWidget(p);
+			break;
+		}
 		tmp.addChangeListener(eventListener);
 		tmp.setVisible(visible);
 		widgets.put(p, tmp);

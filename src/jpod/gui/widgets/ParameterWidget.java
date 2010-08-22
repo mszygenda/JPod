@@ -13,53 +13,30 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import line6.commands.BaseParameter;
 import line6.commands.values.Global;
 
-public class ParameterWidget extends JComponent implements ChangeListener {
-	private JLabel nameLabel;
-	private JSlider slider;
+public class ParameterWidget extends JComponent {
+
 	private ArrayList<ChangeListener> listeners;
-	private int max;
-	private JCheckBox toggle;
-	private int type;
+	
+	protected BaseParameter parameter;
+	protected int type;
+	protected int max;
+	protected String name;
 	
 	public static final int DIAL = 0;
 	public static final int TOGGLE = 1;
+	public static final int COMBO = 3;
 	
-	public ParameterWidget(String name,int maxValue)
+	ParameterWidget(BaseParameter p, int widgetType)
 	{
-		this(name,maxValue,DIAL);
-	}
-	
-	public ParameterWidget(String name,int maxValue, int widgetType)
-	{
-		setLayout(new GridLayout(2,1));
+		parameter = p;
 		type = widgetType;
-		max = maxValue;
+		max = p.getMaxValue();
+		name = p.toString();
 		
 		listeners = new ArrayList<ChangeListener>();
-		
-		nameLabel = new JLabel();
-		nameLabel.setText(name);
-		nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		if(type == DIAL)
-		{
-			slider = new JSlider();
-			slider.setName(name);
-			slider.setToolTipText(name);
-			slider.setMaximum(maxValue);
-			slider.setOrientation(SwingConstants.HORIZONTAL);
-			slider.addChangeListener(this);
-			add(slider);
-			add(nameLabel);
-		}
-		else
-		{
-			toggle = new JCheckBox(name);
-			toggle.addChangeListener(this);
-			add(toggle);
-		}
-		
 	}
 	
 	public void addChangeListener(ChangeListener l)
@@ -69,23 +46,15 @@ public class ParameterWidget extends JComponent implements ChangeListener {
 	
 	public void setValue(int newVal)
 	{
-		if(type == DIAL)
-			slider.setValue(newVal);
-		else
-			toggle.getModel().setSelected(newVal > 0);
+		
 	}
+	
 	
 	public int getValue()
 	{
-		if(type == DIAL)
-			return slider.getValue();
-		else
-		{
-			return toggle.getModel().isSelected() ? max : Global.EffectOff.id();
-		}
+		return 0;
 	}
 
-	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		ChangeEvent event = new ChangeEvent(this);
 		for(ChangeListener l : listeners)
