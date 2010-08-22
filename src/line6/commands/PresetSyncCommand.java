@@ -63,7 +63,8 @@ public class PresetSyncCommand extends Command {
 				parser.toggleProperty(ParameterToggle.Drive);
 				parser.toggleProperty(ParameterToggle.Eq);
 				parser.toggleProperty(ParameterToggle.Delay);//Delay switch
-				stream.skip(4);
+				parser.toggleProperty(ParameterToggle.EnableEffect);
+				parser.toggleProperty(ParameterToggle.ReverbEnable);
 				parser.toggleProperty(ParameterToggle.NoiseGate);
 				parser.toggleProperty(ParameterToggle.Bright);
 				
@@ -82,7 +83,7 @@ public class PresetSyncCommand extends Command {
 				parser.shortIntProperty(EffectParameter.WahTopFreq,1);
 				stream.skip(13);
 				stream.skip(3);//Delay Coarse
-				parser.shortIntProperty(EffectParameter.DelayFine);
+				parser.shortIntProperty(EffectParameter.DelayFine,1);
 				stream.skip(8);
 				parser.shortIntProperty(EffectParameter.DelayFeedback);
 				stream.skip(2);
@@ -95,9 +96,15 @@ public class PresetSyncCommand extends Command {
 				parser.shortIntProperty(EffectParameter.ReverbDensity);
 				parser.shortIntProperty(Parameter.Reverb);
 				parser.shortIntProperty(Parameter.Cabinet,1);
-				stream.skip(2);
+				parser.shortIntProperty(Parameter.Air);
 				parser.shortIntProperty(Parameter.Effect,1);
-				stream.skip(16);
+				stream.skip(2);
+				parser.comboProperty(EffectParameter.CompressorRatio);
+				parser.shortIntProperty(EffectParameter.Speed, 1);
+				stream.skip(2);
+				parser.shortIntProperty(EffectParameter.Depth);
+				parser.shortIntProperty(EffectParameter.Feedback);
+				stream.skip(4);
 				
 				stream.read(presetName);
 				settings.setName(parser.parsePodString(presetName));

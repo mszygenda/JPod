@@ -29,7 +29,8 @@ public enum EffectParameter implements BaseParameter {
 	NoiseGateThreshold(23,127),
 	NoiseGateDecay(24),
 	SlowSpeed(57),
-	FastSpeed(56,122);
+	FastSpeed(56,122),
+	CompressorRatio(42);
 	
 	private int effect_parameter_id;
 	private int maxValue;

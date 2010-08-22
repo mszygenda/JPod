@@ -21,6 +21,7 @@ import line6.commands.EffectParameter;
 import line6.commands.Parameter;
 import line6.commands.ParameterToggle;
 import line6.commands.values.Effect;
+import line6.commands.values.Global;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -64,6 +65,19 @@ public class EffectSettings extends BaseWidget {
 		{
 			registerParameter(p);
 		}
+		ParameterWidget compressorRatioCombo = 
+			new ParameterComboWidget(
+					EffectParameter.CompressorRatio,
+					Global.EffectOff,
+					Global.Compressor1_4To1,
+					Global.Compressor2To1,
+					Global.Compressor3To1,
+					Global.Compressor6To1,
+					Global.CompressorInfTo1);
+		compressorRatioCombo.addChangeListener(eventListener);
+		widgets.put(EffectParameter.CompressorRatio, compressorRatioCombo);
+		
+		
 		JPanel delayPanel = createPanel("Delay");
 		JPanel togglesPanel = createPanel("Toggles");
 		JPanel noiseGatePanel = createPanel("Noise gate");
@@ -86,6 +100,7 @@ public class EffectSettings extends BaseWidget {
 		eqPanel.add(widgets.get(Parameter.Reverb));
 		eqPanel.add(widgets.get(Parameter.ChannelVolume));
 		eqPanel.add(widgets.get(Parameter.Volume));
+		eqPanel.add(widgets.get(Parameter.Air));
 		
 	
 		delayPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -100,6 +115,7 @@ public class EffectSettings extends BaseWidget {
 		effectPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		effectPanel.add(widgets.get(ParameterToggle.EnableEffect));
 		effectPanel.add(widgets.get(ParameterToggle.RotarySpeed));
+		effectPanel.add(widgets.get(EffectParameter.CompressorRatio));
 		effectPanel.add(widgets.get(EffectParameter.TremoloSpeed));
 		effectPanel.add(widgets.get(EffectParameter.TremoloDepth));
 		effectPanel.add(widgets.get(EffectParameter.Speed));

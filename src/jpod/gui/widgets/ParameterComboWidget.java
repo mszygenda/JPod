@@ -35,7 +35,7 @@ public class ParameterComboWidget extends ParameterWidget implements ItemListene
 	@Override
 	public void itemStateChanged(ItemEvent item) {
 		ChangeEvent event = new ChangeEvent(this);
-		this.stateChanged(event);
+		super.stateChanged(event);
 	}
 	
 	@Override
@@ -45,7 +45,8 @@ public class ParameterComboWidget extends ParameterWidget implements ItemListene
 		{
 			if(value.id() == newValue)
 			{
-				combo.setSelectedItem(value);
+				if(value != combo.getSelectedItem())
+					combo.setSelectedItem(value);
 				break;
 			}
 		}

@@ -16,6 +16,14 @@ public class SysexParser {
 		settings = newSettings;
 	}
 	
+	public void comboProperty(BaseParameter p) throws IOException
+	{
+		byte shortInt[] = new byte[2];
+		stream.read(shortInt);
+		//25, 50, 75, 100 Are next values of combo parameters
+		settings.setValue(p, parsePodShortInteger(shortInt)*25);
+	}
+	
 	public void shortIntProperty(BaseParameter p) throws IOException
 	{
 		shortIntProperty(p,2);

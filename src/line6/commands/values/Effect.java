@@ -23,7 +23,8 @@ public enum Effect implements BaseParameter {
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
 			ParameterToggle.RotarySpeed,
-			ParameterToggle.Delay
+			ParameterToggle.Delay,
+			EffectParameter.CompressorRatio
 			),
 	Flanger2(3,
 			Flanger1.forbiddenParameters()),
@@ -38,7 +39,8 @@ public enum Effect implements BaseParameter {
 			EffectParameter.Feedback,
 			EffectParameter.Speed,
 			EffectParameter.Predelay,
-			ParameterToggle.Delay),
+			ParameterToggle.Delay,
+			EffectParameter.CompressorRatio),
 	Delay(
 			6,
 			EffectParameter.TremoloDepth, 
@@ -50,7 +52,8 @@ public enum Effect implements BaseParameter {
 			EffectParameter.Feedback,
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
-			ParameterToggle.RotarySpeed
+			ParameterToggle.RotarySpeed,
+			EffectParameter.CompressorRatio
 			),
 	DelayComp(
 			7, 
@@ -73,7 +76,8 @@ public enum Effect implements BaseParameter {
 			EffectParameter.Predelay,
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
-			ParameterToggle.RotarySpeed
+			ParameterToggle.RotarySpeed,
+			EffectParameter.CompressorRatio
 			),
 	DelayChorus1(4,
 			EffectParameter.TremoloDepth, 
@@ -81,14 +85,16 @@ public enum Effect implements BaseParameter {
 			EffectParameter.SwellAttackTime,
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
-			ParameterToggle.RotarySpeed),
+			ParameterToggle.RotarySpeed,
+			EffectParameter.CompressorRatio),
 	DelayChorus2(12,
 			EffectParameter.TremoloDepth, 
 			EffectParameter.TremoloSpeed,
 			EffectParameter.SwellAttackTime,
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
-			ParameterToggle.RotarySpeed
+			ParameterToggle.RotarySpeed,
+			EffectParameter.CompressorRatio
 			),
 	DelayFlanger1(13,
 			EffectParameter.TremoloDepth, 
@@ -96,7 +102,8 @@ public enum Effect implements BaseParameter {
 			EffectParameter.SwellAttackTime,
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
-			ParameterToggle.RotarySpeed),
+			ParameterToggle.RotarySpeed,
+			EffectParameter.CompressorRatio),
 	DelayFlager2(15,
 			DelayFlanger1.forbiddenParameters()),
 	DelaySwell(14,
@@ -107,7 +114,8 @@ public enum Effect implements BaseParameter {
 			EffectParameter.Feedback,
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
-			ParameterToggle.RotarySpeed),
+			ParameterToggle.RotarySpeed,
+			EffectParameter.CompressorRatio),
 	Bypass(10,
 			EffectParameter.DelayCoarse, 
 			EffectParameter.DelayFeedback,
@@ -123,9 +131,24 @@ public enum Effect implements BaseParameter {
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
 			ParameterToggle.RotarySpeed,
-			ParameterToggle.Delay
+			ParameterToggle.Delay,
+			EffectParameter.CompressorRatio
 			),
-	Compressor(11, Bypass.forbiddenParameters()),
+	Compressor(11, EffectParameter.DelayCoarse, 
+			EffectParameter.DelayFeedback,
+			EffectParameter.DelayLevel, 
+			EffectParameter.DelayFine,
+			EffectParameter.TremoloSpeed,
+			EffectParameter.TremoloDepth,
+			EffectParameter.SwellAttackTime,
+			EffectParameter.Depth,
+			EffectParameter.Speed,
+			EffectParameter.Feedback,
+			EffectParameter.Predelay,
+			EffectParameter.SlowSpeed,
+			EffectParameter.FastSpeed,
+			ParameterToggle.RotarySpeed,
+			ParameterToggle.Delay),
 	Tremolo(9,
 			EffectParameter.Feedback,
 			EffectParameter.DelayCoarse, 
@@ -140,7 +163,8 @@ public enum Effect implements BaseParameter {
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
 			ParameterToggle.RotarySpeed,
-			ParameterToggle.Delay),
+			ParameterToggle.Delay,
+			EffectParameter.CompressorRatio),
 	Chorus1(8,Flanger1.forbiddenParameters()),
 	Chorus2(0, Flanger1.forbiddenParameters());
 	
