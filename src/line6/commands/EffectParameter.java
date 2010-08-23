@@ -34,6 +34,7 @@ public enum EffectParameter implements BaseParameter {
 	
 	private int effect_parameter_id;
 	private int maxValue;
+	private double factor;
 	
 	private EffectParameter(int id)
 	{

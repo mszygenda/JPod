@@ -50,15 +50,14 @@ public class PresetSyncCommand extends Command {
 			//settings.setId(m.getMessage()[PRESET_ID_POSITION]);
 			//settings.setValue(ParameterToggle.Eq, m.getMessage()[EQ_STATUS_POSITION] * Global.EffectOn.id());
 			byte header [] = new byte[7];
-			byte presetName [] = new byte[32];
 			ByteArrayInputStream stream = new ByteArrayInputStream(m.getMessage());
-			SysexParser parser = new SysexParser(stream,settings);
 			try {
 				stream.read(header);
 				//Preset id
 				settings.setId(stream.read()+1);
 				//We dont know what is there yet
 				stream.skip(1);
+				SysexParser parser = new SysexParser(stream,settings);
 				parser.toggleProperty(ParameterToggle.Distortion);
 				parser.toggleProperty(ParameterToggle.Drive);
 				parser.toggleProperty(ParameterToggle.Eq);
@@ -68,46 +67,45 @@ public class PresetSyncCommand extends Command {
 				parser.toggleProperty(ParameterToggle.NoiseGate);
 				parser.toggleProperty(ParameterToggle.Bright);
 				
-				parser.shortIntProperty(Parameter.Amp,1);
-				parser.shortIntProperty(Parameter.Drive);
-				parser.shortIntProperty(Parameter.Drive2);
-				parser.shortIntProperty(Parameter.Bass);
-				parser.shortIntProperty(Parameter.Mid);
-				parser.shortIntProperty(Parameter.Treble);
-				parser.shortIntProperty(Parameter.Presence);
-				parser.shortIntProperty(Parameter.ChannelVolume);
-				parser.shortIntProperty(EffectParameter.NoiseGateThreshold);
-				parser.shortIntProperty(EffectParameter.NoiseGateDecay);
-				parser.shortIntProperty(EffectParameter.WahPosition,1);
-				parser.shortIntProperty(EffectParameter.WahBotFreq,1);
-				parser.shortIntProperty(EffectParameter.WahTopFreq,1);
-				stream.skip(13);
-				stream.skip(3);//Delay Coarse
-				parser.shortIntProperty(EffectParameter.DelayFine,1);
-				stream.skip(8);
-				parser.shortIntProperty(EffectParameter.DelayFeedback);
-				stream.skip(2);
-				parser.shortIntProperty(EffectParameter.DelayLevel);
-				stream.skip(2);
+				parser.byteProperty(Parameter.Amp,1.0);
+				parser.byteProperty(Parameter.Drive);
+				parser.byteProperty(Parameter.Drive2);
+				parser.byteProperty(Parameter.Bass);
+				parser.byteProperty(Parameter.Mid);
+				parser.byteProperty(Parameter.Treble);
+				parser.byteProperty(Parameter.Presence);
+				parser.byteProperty(Parameter.ChannelVolume);
+				parser.byteProperty(EffectParameter.NoiseGateThreshold);
+				parser.byteProperty(EffectParameter.NoiseGateDecay);
+				parser.byteProperty(EffectParameter.WahPosition, 1);
+				parser.byteProperty(EffectParameter.WahBotFreq, 1);
+				parser.byteProperty(EffectParameter.WahTopFreq, 1);
+				parser.skip(6);
+				parser.shortProperty(EffectParameter.DelayCoarse, 0.33);
+				parser.byteProperty(EffectParameter.DelayFine,1);
+				parser.skip(4);
+				parser.byteProperty(EffectParameter.DelayFeedback);
+				parser.skip(1);
+				parser.byteProperty(EffectParameter.DelayLevel);
+				parser.skip(1);
 				parser.toggleProperty(ParameterToggle.ReverbSpringRoom);
-				parser.shortIntProperty(EffectParameter.ReverbDecay);
-				parser.shortIntProperty(EffectParameter.ReverbTone);
-				parser.shortIntProperty(EffectParameter.ReverbDiffusion);
-				parser.shortIntProperty(EffectParameter.ReverbDensity);
-				parser.shortIntProperty(Parameter.Reverb);
-				parser.shortIntProperty(Parameter.Cabinet,1);
-				parser.shortIntProperty(Parameter.Air);
-				parser.shortIntProperty(Parameter.Effect,1);
-				stream.skip(2);
+				parser.byteProperty(EffectParameter.ReverbDecay,3);
+				parser.byteProperty(EffectParameter.ReverbTone);
+				parser.byteProperty(EffectParameter.ReverbDiffusion);
+				parser.byteProperty(EffectParameter.ReverbDensity);
+				parser.byteProperty(Parameter.Reverb);
+				parser.byteProperty(Parameter.Cabinet, 1.0);
+				parser.byteProperty(Parameter.Air);
+				parser.byteProperty(Parameter.Effect,1.0);
+				parser.skip(1);
 				parser.comboProperty(EffectParameter.CompressorRatio);
-				parser.shortIntProperty(EffectParameter.Speed, 1);
-				stream.skip(2);
-				parser.shortIntProperty(EffectParameter.Depth);
-				parser.shortIntProperty(EffectParameter.Feedback);
-				stream.skip(4);
+				parser.byteProperty(EffectParameter.Speed,1);
+				parser.skip(1);
+				parser.byteProperty(EffectParameter.Depth,0.178);
+				parser.byteProperty(EffectParameter.Feedback, 0.333);
+				parser.skip(2);
 				
-				stream.read(presetName);
-				settings.setName(parser.parsePodString(presetName));
+				settings.setName(parser.readString(16));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

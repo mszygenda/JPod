@@ -13,7 +13,8 @@ import javax.sound.midi.ShortMessage;
  *
  */
 public class ChangeParameterCommand extends Command {
-
+	public static final int MAX_VALUE = 0x7F;
+	
 	private BaseParameter parameter;
 	private int value;
 	

@@ -1,5 +1,6 @@
 package line6.commands;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 
@@ -10,67 +11,80 @@ import line6.commands.values.Global;
 public class SysexParser {
 	private ByteArrayInputStream stream;
 	private DeviceSettings settings;
-	SysexParser(ByteArrayInputStream newStream, DeviceSettings newSettings)
+	SysexParser(ByteArrayInputStream newStream, DeviceSettings newSettings) throws IOException
 	{
-		stream = newStream;
+		stream = removeNullBits(newStream);
 		settings = newSettings;
 	}
 	
 	public void comboProperty(BaseParameter p) throws IOException
 	{
-		byte shortInt[] = new byte[2];
-		stream.read(shortInt);
 		//25, 50, 75, 100 Are next values of combo parameters
-		settings.setValue(p, parsePodShortInteger(shortInt)*25);
+		settings.setValue(p, stream.read()*25);
 	}
 	
-	public void shortIntProperty(BaseParameter p) throws IOException
+	public String readString(int length) throws IOException
 	{
-		shortIntProperty(p,2);
+		byte str[] = new byte[length];
+		stream.read(str);
+		return new String(str);
 	}
 	
-	public void shortIntProperty(BaseParameter p, int factor) throws IOException
+	
+	public void shortProperty(BaseParameter p) throws IOException
+	{
+		shortProperty(p, 2.0);
+	}
+	
+	public void shortProperty(BaseParameter p, double factor) throws IOException
 	{
 		byte shortInt[] = new byte[2];
 		stream.read(shortInt);
-		settings.setValue(p, factor*parsePodShortInteger(shortInt));
+		int value = shortInt[1] + (8 << (int)shortInt[0]);
+		settings.setValue(p, (int)(factor*value));
 	}
+	
+	public void byteProperty(BaseParameter p)
+	{
+		byteProperty(p,2.0);
+	}
+	
+	public void byteProperty(BaseParameter p, double factor)
+	{
+		int value;
+		value = stream.read();
+		settings.setValue(p,(int)(factor*value));
+	}
+	
+	
 	public void toggleProperty(BaseParameter p) throws IOException
 	{
-		byte shortInt[] = new byte[2];
-		stream.read(shortInt);
-		settings.setValue(p, parsePodShortInteger(shortInt)*Global.EffectOn.id());
-	}
-	public static int toPodShortInteger(int shortInt)
-	{
-		return (shortInt % 16) + (256*(shortInt/16));
+		settings.setValue(p, stream.read()*Global.EffectOn.id());
 	}
 	
-	public static int parsePodShortInteger(byte shortInt[])
+	
+	/**
+	 * POD sysex message has null bits between each byte of data so we have to remove them before parsing
+	 * in example: 03 0F which is 0000 0011 0000 1111 after call of this function will look like this:
+	 * 3F 0011 1111
+	 * @throws IOException 
+	 * 
+	 *
+	 */
+	public static ByteArrayInputStream removeNullBits(ByteArrayInputStream inputStream) throws IOException
 	{
-		if(shortInt.length == 2) {
-			return shortInt[0]*16 + shortInt[1];
-		} else
-			return 0;
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		byte tmp [] = new byte[2];
+		while(inputStream.available() >= 2)
+		{
+			inputStream.read(tmp);
+			out.write(((int)tmp[0] << 4) + (int)tmp[1]);
+		}
+		return new ByteArrayInputStream(out.toByteArray());
 	}
 	
-	public static String parsePodString(byte str[])
+	public void skip(long bytes)
 	{
-		ByteArrayInputStream stream = new ByteArrayInputStream(str);
-		StringBuffer result = new StringBuffer();
-		byte character[] = new byte[2];
-		try
-		{
-			while(stream.available() >= 2)
-			{
-				stream.read(character);
-				result.append((char)parsePodShortInteger(character));
-			}
-		}
-		catch(IOException e)
-		{
-			System.out.println("Something wrong during parsing preset name");
-		}
-		return result.toString();
+		stream.skip(bytes);
 	}
 }
