@@ -27,10 +27,14 @@ public abstract class BaseWidget extends JComponent implements DeviceListener {
 	
 	public void setActiveDevice(Device dev)
 	{
-		if(dev != activeDevice)
-			activeDeviceChanged();
+		Device oldDevice = activeDevice;
 		activeDevice = dev;
-		
+		dev.removeEventListener(this);
+		if(oldDevice != activeDevice)
+		{
+			dev.addEventListener(this);
+			activeDeviceChanged();
+		}
 	}
 	
 	public Device getActiveDevice()
@@ -40,5 +44,4 @@ public abstract class BaseWidget extends JComponent implements DeviceListener {
 	
 	abstract void activeDeviceChanged();
 	public abstract void presetsSynchronized(Device dev);
-	public abstract void parameterChanged(Device dev, BaseParameter p, int value);
 }

@@ -66,7 +66,8 @@ public enum Effect implements BaseParameter {
 			EffectParameter.SwellAttackTime,
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
-			ParameterToggle.RotarySpeed
+			ParameterToggle.RotarySpeed,
+			ParameterToggle.EnableEffect
 			),
 	DelayTremolo(5,
 			EffectParameter.SwellAttackTime,
@@ -148,7 +149,8 @@ public enum Effect implements BaseParameter {
 			EffectParameter.SlowSpeed,
 			EffectParameter.FastSpeed,
 			ParameterToggle.RotarySpeed,
-			ParameterToggle.Delay),
+			ParameterToggle.Delay,
+			ParameterToggle.EnableEffect),
 	Tremolo(9,
 			EffectParameter.Feedback,
 			EffectParameter.DelayCoarse, 

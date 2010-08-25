@@ -21,6 +21,7 @@ import line6.commands.values.AmpModel;
 import line6.commands.values.Cabinet;
 import line6.commands.values.Effect;
 
+
 public class BasicSettings extends BaseWidget {
 	private JLabel ampModelLabel;
 	private JLabel effectsLabel;
@@ -66,13 +67,13 @@ public class BasicSettings extends BaseWidget {
 		ampModelCB.addItemListener(new AmpModelEvent());
 		cabsCB.addItemListener(new CabChangedEvent());
 		effectsCB.addItemListener(new EffectChangedEvent());
-
+		
 	}
 	
 	@Override
 	void activeDeviceChanged() 
 	{
-		System.out.println("We know");
+		activeDevice.addEventListener(this);
 	}
 
 	class AmpModelEvent implements ItemListener
@@ -133,9 +134,16 @@ public class BasicSettings extends BaseWidget {
 	}
 
 	@Override
-	public void parameterChanged(Device dev, BaseParameter p, int value) {
+	public void parameterChanged(Device dev, BaseParameter p, int value, int oldValue) {
 		settingsChanged(dev);
 	}
+
+	@Override
+	public void activePresetChanged(Device dev, DeviceSettings oldPreset) {
+		settingsChanged(dev);
+	}
+
+
 
 
 }

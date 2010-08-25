@@ -194,7 +194,6 @@ public class EffectSettings extends BaseWidget {
 
 	@Override
 	void activeDeviceChanged() {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -283,13 +282,13 @@ public class EffectSettings extends BaseWidget {
 		for(Enumeration<BaseParameter> parameters = activePreset.getParameters(); parameters.hasMoreElements();)
 		{
 			p = parameters.nextElement();
-			parameterChanged(dev,p,activePreset.getValue(p));
+			parameterChanged(dev,p,activePreset.getValue(p),0);
 		}
 	}
 
 	@Override
-	public void parameterChanged(Device dev, BaseParameter p, int value) {
-		if(p.id() != -1 && widgets.containsKey(p))
+	public void parameterChanged(Device dev, BaseParameter p, int value, int oldValue) {
+		if(widgets.containsKey(p) && widgets.get(p).getValue() != value)
 		{
 			if(value <= p.getMaxValue() && value >= 0)
 				widgets.get(p).setValue(value);
@@ -318,5 +317,11 @@ public class EffectSettings extends BaseWidget {
 			widgets.get(p).setVisible(visible);
 		}
 	}
+
+	@Override
+	public void activePresetChanged(Device dev, DeviceSettings oldPreset) {
+		presetsSynchronized(dev);
+	}
+
 	
 }

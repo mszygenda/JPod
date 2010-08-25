@@ -61,6 +61,7 @@ public class Device implements CommandArrived {
 		if(c instanceof ChangeChannelCommand)
 		{
 			ChangeChannelCommand command = (ChangeChannelCommand)c;
+			DeviceSettings oldPreset = activePreset;
 			for(DeviceSettings preset : presets)
 			{
 				if(preset.getId() == command.getProgram())
@@ -70,16 +71,17 @@ public class Device implements CommandArrived {
 			}
 			for(DeviceListener listener : eventListeners)
 			{
-				listener.presetsSynchronized(this);
+				listener.activePresetChanged(this, oldPreset);
 			}
 		}
 		if(c instanceof ChangeParameterCommand)
 		{
 			ChangeParameterCommand command = (ChangeParameterCommand)c;
+			int oldValue = activePreset.getValue(((ChangeParameterCommand) c).getParameter());
 			activePreset.setValue(command.getParameter(), command.getValue());
 			for(DeviceListener listener : eventListeners)
 			{
-				listener.parameterChanged(this,command.getParameter(),command.getValue());
+				listener.parameterChanged(this,command.getParameter(),command.getValue(), oldValue);
 			}
 		}
 		if(c instanceof PresetSyncCommand)
@@ -193,6 +195,11 @@ public class Device implements CommandArrived {
 		{
 			syncThread.start();
 		}
+	}
+	
+	public void removeEventListener(Object listener)
+	{
+		eventListeners.remove(listener);
 	}
 	/**
 	 * Thread that synchronise device(downloads presets)

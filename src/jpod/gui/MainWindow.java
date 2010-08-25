@@ -1,4 +1,5 @@
 package jpod.gui;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,6 +16,7 @@ import jpod.JPod;
 import jpod.gui.widgets.BaseWidget;
 import jpod.gui.widgets.BasicSettings;
 import jpod.gui.widgets.EffectSettings;
+import jpod.gui.widgets.InformationDialog;
 import jpod.gui.widgets.PresetsWidget;
 import line6.*;
 import line6.commands.BaseParameter;
@@ -34,6 +36,7 @@ import line6.events.DeviceListener;
 public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 	private JComboBox devicesCB;
 	private Device activeDevice;
+	private InformationDialog infoDialog;
 	private JTextField presetNameTextbox;
 	private JTabbedPane tabs;
 	private ArrayList<BaseWidget> widgets;
@@ -80,7 +83,7 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		c.weightx = 20;
 		add(tabs,c);
 		
-		tabs.addTab("Effects setting", effectSettingsWidget);
+		tabs.addTab("Effects settings", effectSettingsWidget);
 		tabs.addTab("Presets", presetsWidget);
 		
 		//post configuration
@@ -103,6 +106,10 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 			activeDevice.addEventListener(this);
 			activeDevice.synchronize();
 			setTitle("JPod - Synchronizing device, please wait");
+			
+			infoDialog = new InformationDialog(this, "Synchronizing", "Device is synchronizing, please wait..." );
+			infoDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+			setVisible(false);
 		}
 	}
 	
@@ -134,21 +141,22 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		}
 	}
 
+	public void activePresetChanged(Device dev, DeviceSettings oldPreset)
+	{
+		presetNameTextbox.setText(dev.getActivePreset().getName());
+	}
+	
 	@Override
 	public void presetsSynchronized(Device dev) {
 		presetNameTextbox.setText(dev.getActivePreset().getName());
+		if(infoDialog != null)
+			infoDialog.setVisible(false);
+		setVisible(true);
 		setTitle("JPod - Synchronized");
-		for(BaseWidget widget : widgets)
-		{
-			widget.presetsSynchronized(dev);
-		}
 	}
 
 	@Override
-	public void parameterChanged(Device dev, BaseParameter p, int value) {
-		for(BaseWidget widget : widgets)
-		{
-			widget.parameterChanged(dev,p,value);
-		}
+	public void parameterChanged(Device dev, BaseParameter p, int value, int oldValue) {
+		
 	}
 }

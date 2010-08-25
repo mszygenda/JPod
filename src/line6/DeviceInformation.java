@@ -4,6 +4,8 @@
  */
 package line6;
 
+import line6.commands.values.AmpModel;
+
 public enum DeviceInformation {
 	PocketPOD(124),
 	Default(100);
