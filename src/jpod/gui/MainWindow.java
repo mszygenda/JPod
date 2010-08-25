@@ -15,6 +15,7 @@ import jpod.JPod;
 import jpod.gui.widgets.BaseWidget;
 import jpod.gui.widgets.BasicSettings;
 import jpod.gui.widgets.EffectSettings;
+import jpod.gui.widgets.PresetsWidget;
 import line6.*;
 import line6.commands.BaseParameter;
 import line6.commands.ChangeParameterCommand;
@@ -34,6 +35,7 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 	private JComboBox devicesCB;
 	private Device activeDevice;
 	private JTextField presetNameTextbox;
+	private JTabbedPane tabs;
 	private ArrayList<BaseWidget> widgets;
 	
 	public MainWindow()
@@ -45,12 +47,15 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		activeDevice = null;
 		widgets = new ArrayList<BaseWidget>();
 		presetNameTextbox = new JTextField();
+		tabs = new JTabbedPane();
 		
 		
 		BasicSettings basicSettingsWidget = new BasicSettings(activeDevice);
 		EffectSettings effectSettingsWidget = new EffectSettings(activeDevice);
+		PresetsWidget presetsWidget = new PresetsWidget(activeDevice);
 		
 		widgets.add(basicSettingsWidget);
+		widgets.add(presetsWidget);
 		widgets.add(effectSettingsWidget);
 		
 		//pre configuration
@@ -73,7 +78,10 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		c.gridy = 3;
 		c.weighty = 100;
 		c.weightx = 20;
-		add(effectSettingsWidget,c);
+		add(tabs,c);
+		
+		tabs.addTab("Effects setting", effectSettingsWidget);
+		tabs.addTab("Presets", presetsWidget);
 		
 		//post configuration
 		

@@ -52,4 +52,9 @@ public class DeviceSettings {
 	{
 		return preset_id;
 	}
+	
+	public String toString()
+	{
+		return getName();
+	}
 }

@@ -107,6 +107,11 @@ public class Device implements CommandArrived {
 		return name;
 	}
 	
+	public ArrayList<DeviceSettings> getPresets()
+	{
+		return presets;
+	}
+	
 	public ArrayList<Command> getReceivedCommands()
 	{
 		return deviceReceiver.getReceivedCommands();
