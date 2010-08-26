@@ -20,12 +20,12 @@ import line6.commands.BaseParameter;
 import line6.commands.ChangeChannelCommand;
 
 public class PresetsWidget extends BaseWidget implements ListSelectionListener {
-	private JList presets;
+	private PresetsListWidget presets;
 	public PresetsWidget(Device device)
 	{
 		super(device);
 		setLayout(new BorderLayout());
-		presets = new JList();
+		presets = new PresetsListWidget();
 		presets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		presets.setLayoutOrientation(JList.VERTICAL_WRAP);
 		//presets.setPreferredSize(this.getMaximumSize());
@@ -52,12 +52,8 @@ public class PresetsWidget extends BaseWidget implements ListSelectionListener {
 	{
 		if(activeDevice != null)
 		{
-			DefaultListModel model = new DefaultListModel();
-			for(DeviceSettings preset : activeDevice.getPresets())
-			{
-				model.addElement(preset);
-			}
-			presets.setModel(model);
+			presets.clearPresets();
+			presets.addPresets(activeDevice.getPresets());
 			if(activeDevice.getActivePreset() != presets.getSelectedValue() )
 				presets.setSelectedValue((Object)activeDevice.getActivePreset(), true);
 		}
@@ -80,6 +76,5 @@ public class PresetsWidget extends BaseWidget implements ListSelectionListener {
 			presets.setSelectedValue(dev.getActivePreset(), true);
 		}
 	}
-
 
 }

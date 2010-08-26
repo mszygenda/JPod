@@ -149,7 +149,7 @@ public class EffectSettings extends BaseWidget {
 		togglesPanel.add(widgets.get(ParameterToggle.Eq));
 		togglesPanel.add(widgets.get(ParameterToggle.Bright));
 		
-		wahPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		wahPanel.setLayout(new FlowLayout(FlowLayout.RIGHT,0,0));
 		
 		wahPanel.add(widgets.get(ParameterToggle.Wah));
 		wahPanel.add(widgets.get(EffectParameter.WahBotFreq));

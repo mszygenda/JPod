@@ -17,6 +17,7 @@ import jpod.gui.widgets.BaseWidget;
 import jpod.gui.widgets.BasicSettings;
 import jpod.gui.widgets.EffectSettings;
 import jpod.gui.widgets.InformationDialog;
+import jpod.gui.widgets.MetronomeWidget;
 import jpod.gui.widgets.PresetsWidget;
 import line6.*;
 import line6.commands.BaseParameter;
@@ -56,10 +57,12 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		BasicSettings basicSettingsWidget = new BasicSettings(activeDevice);
 		EffectSettings effectSettingsWidget = new EffectSettings(activeDevice);
 		PresetsWidget presetsWidget = new PresetsWidget(activeDevice);
+		MetronomeWidget metronomeWidget = new MetronomeWidget(activeDevice);
 		
 		widgets.add(basicSettingsWidget);
 		widgets.add(presetsWidget);
 		widgets.add(effectSettingsWidget);
+		widgets.add(metronomeWidget);
 		
 		//pre configuration
 	
@@ -85,6 +88,7 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		
 		tabs.addTab("Effects settings", effectSettingsWidget);
 		tabs.addTab("Presets", presetsWidget);
+		tabs.addTab("Metronome (Presets plan)", metronomeWidget);
 		
 		//post configuration
 		

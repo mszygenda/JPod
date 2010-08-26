@@ -29,10 +29,11 @@ public abstract class BaseWidget extends JComponent implements DeviceListener {
 	{
 		Device oldDevice = activeDevice;
 		activeDevice = dev;
-		dev.removeEventListener(this);
-		if(oldDevice != activeDevice)
+		if(oldDevice != null)
+			dev.removeEventListener(this);
+		if(oldDevice != activeDevice && activeDevice != null)
 		{
-			dev.addEventListener(this);
+			activeDevice.addEventListener(this);
 			activeDeviceChanged();
 		}
 	}

@@ -20,16 +20,19 @@ public class ParameterDialWidget extends ParameterWidget implements ChangeListen
 	public ParameterDialWidget(BaseParameter p)
 	{
 		super(p,ParameterWidget.DIAL);
-		setLayout(new GridLayout(2,1));
+		setLayout(new GridLayout(2,1,0,0));
 		
 		nameLabel = new JLabel();
 		nameLabel.setText(name);
 		nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		nameLabel.setVerticalAlignment(JLabel.TOP);
+		
 		slider = new JSlider();
 		slider.setName(name);
 		slider.setToolTipText(name);
 		slider.setMaximum(max);
 		slider.setOrientation(SwingConstants.HORIZONTAL);
+		slider.setPaintLabels(false);
 		slider.addChangeListener(this);
 		add(slider);
 		add(nameLabel);
