@@ -49,6 +49,8 @@ public class Metronome {
 	{
 		if(timer != null)
 			timer.cancel();
+		currentBar = 0;
+		currentBeat = 0;
 	}
 	
 	public class BeatEvent extends TimerTask
@@ -57,7 +59,7 @@ public class Metronome {
 		@Override
 		public void run() {
 			
-			if(currentBeat % beatsPerMeasureCount == 0)
+			if(currentBeat == 0)
 			{
 				System.out.println("Hard beat!");
 				currentBar++;
@@ -65,6 +67,7 @@ public class Metronome {
 			else
 				System.out.println("Beat it!");
 			currentBeat++;
+			currentBeat = currentBeat % beatsPerMeasureCount;
 			action.run();
 		}
 	}

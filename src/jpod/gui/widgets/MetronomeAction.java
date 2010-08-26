@@ -23,6 +23,6 @@ public class MetronomeAction {
 	
 	public String toString()
 	{
-		return devicePreset.toString();
+		return String.format("Bar #%d - %s", bar, devicePreset.toString());
 	}
 }

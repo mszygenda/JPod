@@ -8,6 +8,7 @@ import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -29,6 +30,7 @@ public class MetronomeWidget extends BaseWidget {
 	private JSpinner bpm;
 	private JSpinner beatsPerMeasure;
 	private JButton browseButton;
+	private JLabel currentBarLabel;
 	private Metronome metronome;
 	private JButton startButton;
 	private JList actionList;
@@ -38,8 +40,8 @@ public class MetronomeWidget extends BaseWidget {
 		setLayout(new GridBagLayout());
 		
 		bpm = new JSpinner();
-		bpm.setModel(new SpinnerNumberModel());
-		bpm.setToolTipText("Beats per minute");
+		bpm.setModel(new SpinnerNumberModel(120,1, 500, 10));
+		bpm.setToolTipText("Tempo - Beats per minute");
 		
 		actionList = new JList();
 		actionList.setLayoutOrientation(JList.VERTICAL_WRAP);
@@ -48,14 +50,16 @@ public class MetronomeWidget extends BaseWidget {
 		JScrollPane listScroller = new JScrollPane(actionList);
 		
 		beatsPerMeasure = new JSpinner();
-		beatsPerMeasure.setModel(new SpinnerNumberModel());
+		beatsPerMeasure.setModel(new SpinnerNumberModel(4,1,64,1));
 		beatsPerMeasure.setToolTipText("Beats per measure");
 		bpm.addChangeListener(new MetronomeSettingsChangeListener());
 		beatsPerMeasure.addChangeListener(new MetronomeSettingsChangeListener());
-		metronome = new Metronome(0,0, new MetronomeBeatListener());
+		metronome = new Metronome(4,120, new MetronomeBeatListener());
 		
-		browseButton = new JButton("Browse...");
+		browseButton = new JButton("Browse presets...");
 		browseButton.addActionListener(new BrowseButtonListener());
+		
+		currentBarLabel = new JLabel("Current bar #1");
 		
 		startButton = new JButton("Start");
 		startButton.setActionCommand("start_metronome");
@@ -66,18 +70,24 @@ public class MetronomeWidget extends BaseWidget {
 		c.anchor = GridBagConstraints.CENTER;
 		c.weighty = 1;
 		c.weightx = 1;
-		add(beatsPerMeasure, c);
+		add(currentBarLabel, c);
+		
+		
 		c.gridx = 1;
-		add(bpm, c);
+		add(beatsPerMeasure, c);
+		
 		c.gridx = 2;
-		add(startButton,c);
+		add(bpm, c);
+		
 		c.gridx = 3;
+		add(startButton,c);
+		c.gridx = 4;
 		add(browseButton,c);
 		c.gridy = 1;
 		c.gridx = 0;
 		c.weightx = 4;
 		c.weighty = 5;
-		c.gridwidth = 4;
+		c.gridwidth = 5;
 		c.gridheight = 4;
 		c.fill = GridBagConstraints.BOTH;
 		add(listScroller, c);
@@ -123,6 +133,7 @@ public class MetronomeWidget extends BaseWidget {
 					model.remove(0);
 				}
 			}
+			currentBarLabel.setText(String.format("Current bar #%d",metronome.getBar()));
 		}
 	}
 	

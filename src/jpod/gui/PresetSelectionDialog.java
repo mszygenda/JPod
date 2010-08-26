@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -33,9 +34,9 @@ public class PresetSelectionDialog extends JDialog {
 	{
 		super((JFrame)null,"Select preset");
 		setLayout(new GridBagLayout());
-		this.setLayout(new GridLayout(2,1));
 		list = new PresetsListWidget(presets);
 		list.setLayoutOrientation(PresetsListWidget.VERTICAL_WRAP);
+		list.setVisibleRowCount(20);
 		JScrollPane listScroller = new JScrollPane(list);
 		
 		listeners = new ArrayList<ActionListener> ();
@@ -46,6 +47,8 @@ public class PresetSelectionDialog extends JDialog {
 		okButton.addActionListener(new ButtonsListener());
 		cancelButton.addActionListener(new ButtonsListener());
 		
+	
+		
 		JPanel buttonsPane = new JPanel();
 		buttonsPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		buttonsPane.add(okButton);
@@ -54,13 +57,15 @@ public class PresetSelectionDialog extends JDialog {
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridheight = 4;
-		c.gridwidth = 1;
+		c.gridwidth = 2;
 		c.gridheight = 4;
-		getContentPane().add(listScroller,c);
+		add(listScroller,c);
 		c.gridy = 4;
+		c.gridwidth = 1;
+		c.gridx = 1;
 		c.gridheight = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		getContentPane().add(buttonsPane,c);
+		add(buttonsPane,c);
 		pack();
 		centerScreen();
 	}
