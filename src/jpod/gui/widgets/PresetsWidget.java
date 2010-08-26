@@ -28,6 +28,7 @@ public class PresetsWidget extends BaseWidget implements ListSelectionListener {
 		presets = new PresetsListWidget();
 		presets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		presets.setLayoutOrientation(JList.VERTICAL_WRAP);
+		presets.setVisibleRowCount(20);
 		//presets.setPreferredSize(this.getMaximumSize());
 		presets.addListSelectionListener(this);
 		JScrollPane listScroller = new JScrollPane(presets);

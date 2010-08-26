@@ -88,7 +88,7 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		
 		tabs.addTab("Effects settings", effectSettingsWidget);
 		tabs.addTab("Presets", presetsWidget);
-		tabs.addTab("Metronome (Presets plan)", metronomeWidget);
+		tabs.addTab("Metronome (Automatic presets change)", metronomeWidget);
 		
 		//post configuration
 		

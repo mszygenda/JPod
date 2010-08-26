@@ -56,7 +56,7 @@ public class MetronomeWidget extends BaseWidget {
 		beatsPerMeasure.addChangeListener(new MetronomeSettingsChangeListener());
 		metronome = new Metronome(4,120, new MetronomeBeatListener());
 		
-		browseButton = new JButton("Browse presets...");
+		browseButton = new JButton("Add preset...");
 		browseButton.addActionListener(new BrowseButtonListener());
 		
 		currentBarLabel = new JLabel("Current bar #1");
