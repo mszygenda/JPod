@@ -19,6 +19,10 @@ public class Metronome {
 		currentBeat = 0;
 		currentBar = 0;
 	}
+	public int getBar()
+	{
+		return currentBar;
+	}
 	
 	public void setBpm(int newBpm)
 	{
@@ -61,6 +65,7 @@ public class Metronome {
 			else
 				System.out.println("Beat it!");
 			currentBeat++;
+			action.run();
 		}
 	}
 }
