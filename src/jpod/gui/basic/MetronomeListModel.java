@@ -58,7 +58,7 @@ public class MetronomeListModel extends DefaultListModel {
 		return size;
 	}
 	/**
-	 * Inserts MetronomeAction to the list.
+	 * Inserts MetronomeAction at specified index
 	 * 
 	 * @param o - Must be MetronomeAction instance otherwise it wont be added to the list
 	 */
