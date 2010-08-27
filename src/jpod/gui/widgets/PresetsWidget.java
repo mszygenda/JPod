@@ -56,7 +56,7 @@ public class PresetsWidget extends BaseWidget implements ListSelectionListener {
 		{
 			presets.clearPresets();
 			presets.addPresets(activeDevice.getPresets());
-			if(activeDevice.getActivePreset() != presets.getSelectedValue() )
+			if(activeDevice.getActivePreset() != presets.getSelectedValue() && activeDevice.getActivePreset() != null )
 				presets.setSelectedValue((Object)activeDevice.getActivePreset(), true);
 		}
 	}

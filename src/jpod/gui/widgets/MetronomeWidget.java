@@ -20,6 +20,7 @@ import javax.swing.event.ChangeListener;
 import jpod.utils.Metronome;
 import jpod.gui.PresetSelectionDialog;
 import jpod.gui.basic.MetronomeAction;
+import jpod.gui.basic.MetronomeListModel;
 import jpod.gui.widgets.BaseWidget;
 import line6.Device;
 import line6.DeviceSettings;
@@ -33,7 +34,7 @@ public class MetronomeWidget extends BaseWidget {
 	private JButton browseButton;
 	private JLabel currentBarLabel;
 	private Metronome metronome;
-	private JButton startButton;
+	private JButton startStopButton;
 	private JList actionList;
 	
 	public MetronomeWidget(Device dev) {
@@ -46,7 +47,7 @@ public class MetronomeWidget extends BaseWidget {
 		
 		actionList = new JList();
 		actionList.setLayoutOrientation(JList.VERTICAL_WRAP);
-		DefaultListModel model = new DefaultListModel();
+		MetronomeListModel model = new MetronomeListModel();
 		actionList.setModel(model);
 		JScrollPane listScroller = new JScrollPane(actionList);
 		
@@ -62,9 +63,9 @@ public class MetronomeWidget extends BaseWidget {
 		
 		currentBarLabel = new JLabel("Current bar #1");
 		
-		startButton = new JButton("Start");
-		startButton.setActionCommand("start_metronome");
-		startButton.addActionListener(new StartMetronomeListener());
+		startStopButton = new JButton("Start");
+		startStopButton.setActionCommand("start_metronome");
+		startStopButton.addActionListener(new StartStopMetronomeListener());
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -81,7 +82,7 @@ public class MetronomeWidget extends BaseWidget {
 		add(bpm, c);
 		
 		c.gridx = 3;
-		add(startButton,c);
+		add(startStopButton,c);
 		c.gridx = 4;
 		add(browseButton,c);
 		c.gridy = 1;
@@ -123,15 +124,15 @@ public class MetronomeWidget extends BaseWidget {
 	{
 		@Override
 		public void run() {
-			DefaultListModel model = (DefaultListModel)actionList.getModel();
-			if(model.size() > 0)
+			MetronomeListModel model = (MetronomeListModel)actionList.getModel();
+			if(model.getSize() > 0)
 			{
-				MetronomeAction action = (MetronomeAction)model.get(0);
-				if(metronome.getBar() == action.getBar() && activeDevice != null)
+				MetronomeAction action = (MetronomeAction)model.getElementAt(0);
+				if(metronome.getBar() == action.getBar())
 				{
 					ChangeChannelCommand c = new ChangeChannelCommand(action.getPreset().getId());
-					activeDevice.sendCommand(c);
-					model.remove(0);
+					sendCommand(c);
+					model.removeElementAt(0);
 				}
 			}
 			currentBarLabel.setText(String.format("Current bar #%d",metronome.getBar()));
@@ -157,13 +158,22 @@ public class MetronomeWidget extends BaseWidget {
 		
 	}
 	
-	class StartMetronomeListener implements ActionListener
+	class StartStopMetronomeListener implements ActionListener
 	{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			metronome.stop();
-			metronome.start();
+		public void actionPerformed(ActionEvent arg) {
+			if(metronome.isRunning())
+			{
+				metronome.stop();
+				startStopButton.setText("Start");
+			}
+			else
+			{
+				metronome.start();
+				startStopButton.setText("Stop");
+			}
+			currentBarLabel.setText("Current bar #1");
 		}
 		
 	}
@@ -197,7 +207,7 @@ public class MetronomeWidget extends BaseWidget {
 					int bar;
 					String input = JOptionPane.showInputDialog(MetronomeWidget.this, "Please enter bar in which preset should change", "1");
 					bar = Integer.parseInt(input);
-					DefaultListModel model = (DefaultListModel)actionList.getModel();
+					MetronomeListModel model = (MetronomeListModel)actionList.getModel();
 					model.addElement(new MetronomeAction(preset, bar));
 				}	
 			}

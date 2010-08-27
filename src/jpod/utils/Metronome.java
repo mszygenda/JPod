@@ -14,6 +14,8 @@ public class Metronome {
 	Timer timer;
 	int currentBeat;
 	int currentBar;
+	
+	boolean running;
 	/**
 	 * Creates new metronome object
 	 * @param beatsPerMeasure - Counts of beats that makes full bar
@@ -38,6 +40,15 @@ public class Metronome {
 	public int getBar()
 	{
 		return currentBar;
+	}
+	
+	/**
+	 * Checks if metronome is running
+	 * @return true if metronome is running
+	 */
+	public boolean isRunning()
+	{
+		return running;
 	}
 	
 	/**
@@ -67,6 +78,7 @@ public class Metronome {
 		{
 			timer.cancel();
 		}
+		running = true;
 		timer = new Timer();
 		long delay = (long)((1000.0/ ((double)bpm/60)));
 		timer.scheduleAtFixedRate(new BeatEvent(), delay, delay);
@@ -75,6 +87,7 @@ public class Metronome {
 	
 	public void stop()
 	{
+		running = false;
 		if(timer != null)
 			timer.cancel();
 		currentBar = 0;
