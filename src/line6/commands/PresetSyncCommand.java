@@ -8,18 +8,29 @@ import java.util.Hashtable;
 
 import javax.sound.midi.MidiMessage;
 import line6.DeviceSettings;
+import line6.commands.parameters.EffectParameter;
+import line6.commands.parameters.Parameter;
+import line6.commands.parameters.ParameterToggle;
 import line6.commands.values.Global;
 
+
+/**
+ * Sysex message that contains every device settings. It contains DevicePreset
+ * @author Mateusz Szygenda
+ *
+ */
 public class PresetSyncCommand extends Command {
-	public static int EQ_STATUS_POSITION = 14;
-	public static int PRESET_ID_POSITION = 8;
 	
 	DeviceSettings settings;
+	
 	public PresetSyncCommand()
 	{
 		settings = new DeviceSettings();
 	}
-	
+	/**
+	 * 
+	 * @return Preset that this command represent
+	 */
 	public DeviceSettings getPreset()
 	{
 		return settings;

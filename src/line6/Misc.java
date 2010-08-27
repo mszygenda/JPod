@@ -1,5 +1,10 @@
 package line6;
 
+/**
+ * Misc static methods
+ * @author Mateusz Szygenda
+ *
+ */
 public class Misc {
 	public static String splitByUppercase(String str)
 	{

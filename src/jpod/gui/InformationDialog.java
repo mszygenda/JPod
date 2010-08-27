@@ -1,4 +1,4 @@
-package jpod.gui.widgets;
+package jpod.gui;
 
 import java.awt.Dialog;
 import java.awt.Dimension;

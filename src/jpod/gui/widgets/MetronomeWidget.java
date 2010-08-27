@@ -17,13 +17,14 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import jpod.Metronome;
+import jpod.utils.Metronome;
 import jpod.gui.PresetSelectionDialog;
+import jpod.gui.basic.MetronomeAction;
 import jpod.gui.widgets.BaseWidget;
 import line6.Device;
 import line6.DeviceSettings;
-import line6.commands.BaseParameter;
 import line6.commands.ChangeChannelCommand;
+import line6.commands.parameters.BaseParameter;
 
 public class MetronomeWidget extends BaseWidget {
 

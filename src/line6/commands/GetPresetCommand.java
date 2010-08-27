@@ -4,9 +4,18 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 
+/**
+ * Sysex command that sends request to device for preset settings
+ * @author Mateusz Szygenda
+ *
+ */
 public class GetPresetCommand extends Command {
 	private int preset_id;
 	
+	/**
+	 * Creates new preset request 
+	 * @param previous_preset_id - ID of preset we want to get minus 1
+	 */
 	public GetPresetCommand(int previous_preset_id)
 	{
 		preset_id = previous_preset_id;
@@ -17,6 +26,11 @@ public class GetPresetCommand extends Command {
 		return 34;
 	}
 
+	/**
+	 * Sets preset id.
+	 * 
+	 * @param id - Preset id minus 1
+	 */
 	public void setPresetId(int id)
 	{
 		preset_id = id;

@@ -4,7 +4,7 @@
  */
 package line6.commands.values;
 
-import line6.commands.BaseParameter;
+import line6.commands.parameters.BaseParameter;
 
 public enum Global implements BaseParameter {
 	EffectOn(64),

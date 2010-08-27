@@ -5,6 +5,11 @@
 package line6.commands;
 import javax.sound.midi.*;
 
+/**
+ * Abstract base class for every command that is send or received from line6 device
+ * @author Mateusz Szygenda
+ *
+ */
 public abstract class Command {
 
 	public abstract int getType();

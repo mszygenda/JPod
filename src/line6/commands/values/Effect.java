@@ -6,10 +6,10 @@ package line6.commands.values;
 
 import java.util.ArrayList;
 
-import line6.commands.BaseParameter;
-import line6.commands.EffectParameter;
-import line6.commands.Parameter;
-import line6.commands.ParameterToggle;
+import line6.commands.parameters.BaseParameter;
+import line6.commands.parameters.EffectParameter;
+import line6.commands.parameters.Parameter;
+import line6.commands.parameters.ParameterToggle;
 
 public enum Effect implements BaseParameter {
 	Flanger1(1,

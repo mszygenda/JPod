@@ -14,6 +14,7 @@ import javax.swing.*;
 import jpod.gui.*;
 
 /**
+ * Main class of application
  * @author Mateusz Szygenda
  *
  */
@@ -31,6 +32,9 @@ public class JPod implements Runnable {
 		System.out.println("bye!");
 	}
 	
+	/**
+	 * Creates new main window and sets native look and feel
+	 */
 	public void run()
 	{
 		try

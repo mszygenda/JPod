@@ -1,4 +1,4 @@
-package jpod.gui.widgets;
+package jpod.gui.basic;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -10,8 +10,9 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeListener;
 
-import line6.commands.BaseParameter;
-import line6.commands.Parameter;
+
+import line6.commands.parameters.BaseParameter;
+import line6.commands.parameters.Parameter;
 
 public class ParameterDialWidget extends ParameterWidget implements ChangeListener {
 	private JLabel nameLabel;

@@ -1,4 +1,4 @@
-package jpod.gui.widgets;
+package jpod.gui.basic;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import line6.commands.BaseParameter;
+import line6.commands.parameters.BaseParameter;
 import line6.commands.values.Global;
 
 public class ParameterWidget extends JComponent {

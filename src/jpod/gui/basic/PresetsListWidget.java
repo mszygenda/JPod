@@ -1,4 +1,4 @@
-package jpod.gui.widgets;
+package jpod.gui.basic;
 
 import java.util.ArrayList;
 

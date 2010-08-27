@@ -7,10 +7,15 @@ package jpod.gui.widgets;
 import javax.swing.JComponent;
 
 import line6.Device;
-import line6.commands.BaseParameter;
 import line6.commands.Command;
+import line6.commands.parameters.BaseParameter;
 import line6.events.DeviceListener;
 
+/**
+ * Base widget for each task
+ * @author Mateusz Szygenda
+ *
+ */
 public abstract class BaseWidget extends JComponent implements DeviceListener {
 	protected Device activeDevice;
 	

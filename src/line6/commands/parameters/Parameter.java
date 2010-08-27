@@ -2,7 +2,7 @@
  * @author Mateusz Szygenda
  *
  */
-package line6.commands;
+package line6.commands.parameters;
 
 import line6.Misc;
 import line6.commands.values.*;

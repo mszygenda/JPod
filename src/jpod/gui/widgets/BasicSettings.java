@@ -14,9 +14,9 @@ import javax.swing.JLabel;
 
 import jpod.JPod;
 import line6.*;
-import line6.commands.BaseParameter;
 import line6.commands.ChangeParameterCommand;
-import line6.commands.Parameter;
+import line6.commands.parameters.BaseParameter;
+import line6.commands.parameters.Parameter;
 import line6.commands.values.AmpModel;
 import line6.commands.values.Cabinet;
 import line6.commands.values.Effect;

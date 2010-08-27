@@ -8,6 +8,12 @@ import java.util.Hashtable;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+/**
+ *
+ * @author Mateusz Szygenda
+ *
+ *	Class used to detect Line6 Devices
+ */
 public class DeviceManager {
 	/**
 	 * Finds all devices handled by line6 driver
@@ -55,6 +61,12 @@ public class DeviceManager {
 		return line6Devices;
 	}
 	
+	/**
+	 * Checks if midi device can receive data
+	 * 
+	 * @param dev - Device that will be checked
+	 * @return True if device can be receiver
+	 */
 	public static boolean checkInput(MidiDevice dev)
 	{
 		try 
@@ -68,6 +80,11 @@ public class DeviceManager {
 		}
 	}
 	
+	/**
+	 * Checks if midi device can send data
+	 * @param dev - Device that will be checked
+	 * @return true - if device can be transmitter
+	 */
 	public static boolean checkOutput(MidiDevice dev)
 	{
 		try

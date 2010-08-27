@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import jpod.gui.widgets.PresetsListWidget;
+import jpod.gui.basic.PresetsListWidget;
 import line6.DeviceSettings;
 
 public class PresetSelectionDialog extends JDialog {

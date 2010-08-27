@@ -16,19 +16,18 @@ import jpod.JPod;
 import jpod.gui.widgets.BaseWidget;
 import jpod.gui.widgets.BasicSettings;
 import jpod.gui.widgets.EffectSettings;
-import jpod.gui.widgets.InformationDialog;
 import jpod.gui.widgets.MetronomeWidget;
 import jpod.gui.widgets.PresetsWidget;
 import line6.*;
-import line6.commands.BaseParameter;
 import line6.commands.ChangeParameterCommand;
 import line6.commands.GetPresetCommand;
-import line6.commands.Parameter;
 /**
  * @author Mateusz Szygenda
  *
  */
 
+import line6.commands.parameters.BaseParameter;
+import line6.commands.parameters.Parameter;
 import line6.commands.values.AmpModel;
 import line6.commands.values.Effect;
 import line6.events.DeviceListener;

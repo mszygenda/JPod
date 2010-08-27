@@ -4,8 +4,8 @@
  */
 package line6.commands.values;
 
-import line6.commands.BaseParameter;
-import line6.commands.Parameter;
+import line6.commands.parameters.BaseParameter;
+import line6.commands.parameters.Parameter;
 
 public enum Cabinet implements BaseParameter {
 	SmallTweed2_1x8(0),

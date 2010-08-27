@@ -15,11 +15,11 @@ import java.util.Hashtable;
 
 import line6.Device;
 import line6.DeviceSettings;
-import line6.commands.BaseParameter;
 import line6.commands.ChangeParameterCommand;
-import line6.commands.EffectParameter;
-import line6.commands.Parameter;
-import line6.commands.ParameterToggle;
+import line6.commands.parameters.BaseParameter;
+import line6.commands.parameters.EffectParameter;
+import line6.commands.parameters.Parameter;
+import line6.commands.parameters.ParameterToggle;
 import line6.commands.values.Effect;
 import line6.commands.values.Global;
 
@@ -32,6 +32,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import jpod.gui.basic.ParameterComboWidget;
+import jpod.gui.basic.ParameterDialWidget;
+import jpod.gui.basic.ParameterToggleWidget;
+import jpod.gui.basic.ParameterWidget;
 
 public class EffectSettings extends BaseWidget {
 	private ChangeListener eventListener;

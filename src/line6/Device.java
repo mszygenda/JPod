@@ -7,9 +7,16 @@ import javax.sound.midi.*;
 
 import java.util.*;
 import line6.commands.*;
+import line6.events.CommandArriveListener;
 import line6.events.DeviceListener;
 
-public class Device implements CommandArrived {
+/**
+ * Class that represents Line6 midi device
+ * 
+ * @author Mateusz Szygenda
+ *
+ */
+public class Device implements CommandArriveListener {
 	protected DeviceSettings activePreset;
 	private ArrayList<DeviceListener> eventListeners;
 	protected String name;
@@ -22,6 +29,11 @@ public class Device implements CommandArrived {
 	protected DeviceInformation deviceInfo;
 	private boolean initialized;
 	
+	/**
+	 * Creates new device that can transmit and receive data
+	 * @param input - Midi input device
+	 * @param output - Midi output device
+	 */
 	public Device(MidiDevice input, MidiDevice output)
 	{
 		initialized = false;
@@ -50,11 +62,25 @@ public class Device implements CommandArrived {
 			name = "unknown";
 	}
 	
+	/**
+	 * Adds event listener that will be called everytime device receive or send new data 
+	 * Where there is no event listener each command can be received using getCommands method
+	 * 
+	 * @see getCommand()
+	 * @see DeviceListener
+	 * 
+	 * @param listener
+	 */
 	public void addEventListener(DeviceListener listener)
 	{
 		eventListeners.add(listener);
 	}
 	
+	/**
+	 * This method is called when new command arrives
+	 * 
+	 * 
+	 */
 	public void commandArrived(Command c)
 	{
 		System.out.println("Received command");
@@ -99,26 +125,53 @@ public class Device implements CommandArrived {
 			midiDeviceOutput.close();
 	}
 	
+	/**
+	 * Returns active preset that is set on the device. Be sure you call this method after
+	 * you synchronize device
+	 * 
+	 * @return Active DeviceSettings or empty DeviceSettings
+	 */
 	public DeviceSettings getActivePreset()
 	{
 		return activePreset;
 	}
 	
+	/**
+	 * Return human-readable name of the device
+	 * 
+	 * @return String containing human-readable name of the device
+	 */
 	public String getName()
 	{
 		return name;
 	}
 	
+	/**
+	 * Be sure to call synchronize first.
+	 * 
+	 * @see synchronize
+	 * @return ArrayList of presets that can be set on device
+	 */
 	public ArrayList<DeviceSettings> getPresets()
 	{
 		return presets;
 	}
 	
+	/**
+	 * This command will return commands only if there is no event listeners.
+	 * 
+	 * @return ArrayList of commands that device received
+	 */
 	public ArrayList<Command> getReceivedCommands()
 	{
 		return deviceReceiver.getReceivedCommands();
 	}
 	
+	/**
+	 * Initializes device, this should be called once for each device. It is done by constructor
+	 * 
+	 * @return True on success, false when errors occured
+	 */
 	protected boolean init()
 	{
 		if(!initialized)
@@ -151,16 +204,34 @@ public class Device implements CommandArrived {
 			return true;
 	}
 	
+	/**
+	 * Checks if device is initialized(Whether is able to send and transmit data)
+	 * 
+	 * @return True - if device is initizalized
+	 */
 	public boolean isInitialized()
 	{
 		return initialized;
 	}
 	
+	/**
+	 * Checks if device is synchronized (Whether presets are downloaded from device)
+	 * 
+	 * @return True if device is synchronized
+	 */
 	public boolean isSynchronized()
 	{
 		return devSynchronized;
 	}
 	
+	/**
+	 * Sends command to device
+	 * 
+	 * @see line6.commands
+	 * 
+	 * @param c - Command that should be send to device
+	 * @return True if command was successfully sent.
+	 */
 	public boolean sendCommand(Command c)
 	{
 		if(isInitialized())
@@ -177,6 +248,10 @@ public class Device implements CommandArrived {
 			return false;
 	}
 	
+	/**
+	 * Stops synchronization thread
+	 * 
+	 */
 	public void stopSynchronize()
 	{
 		if(syncThread.isAlive())
@@ -185,6 +260,10 @@ public class Device implements CommandArrived {
 		}
 	}
 	
+	/**
+	 * Begins device synchronization. It will collect presets from device in new Thread
+	 * 
+	 */
 	public void synchronize()
 	{
 		if(syncThread.isAlive())
@@ -197,13 +276,18 @@ public class Device implements CommandArrived {
 		}
 	}
 	
+	/**
+	 * Remove event listener
+	 * 
+	 * @param listener - Listener that should be removed
+	 */
 	public void removeEventListener(Object listener)
 	{
 		eventListeners.remove(listener);
 	}
 	/**
 	 * Thread that synchronise device(downloads presets)
-	 * @author szygi
+	 * @author Mateusz Szygenda
 	 *
 	 */
 	class SyncingThread extends Thread
@@ -251,7 +335,10 @@ public class Device implements CommandArrived {
 			continueWork = false;
 		}
 	}
-	
+	/**
+	 * Return human-readable name of the device.
+	 * 
+	 */
 	public String toString()
 	{
 		return getName();

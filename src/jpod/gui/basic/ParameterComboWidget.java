@@ -1,4 +1,4 @@
-package jpod.gui.widgets;
+package jpod.gui.basic;
 
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
@@ -9,7 +9,8 @@ import javax.swing.JComboBox;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import line6.commands.BaseParameter;
+
+import line6.commands.parameters.BaseParameter;
 
 public class ParameterComboWidget extends ParameterWidget implements ItemListener{
 	private JComboBox combo;

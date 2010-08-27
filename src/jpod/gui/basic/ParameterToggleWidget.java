@@ -1,11 +1,12 @@
-package jpod.gui.widgets;
+package jpod.gui.basic;
 
 import java.awt.FlowLayout;
 
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeListener;
 
-import line6.commands.BaseParameter;
+
+import line6.commands.parameters.BaseParameter;
 
 public class ParameterToggleWidget extends ParameterWidget implements ChangeListener {
 	

@@ -13,11 +13,12 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import jpod.gui.basic.PresetsListWidget;
 import jpod.gui.widgets.BaseWidget;
 import line6.Device;
 import line6.DeviceSettings;
-import line6.commands.BaseParameter;
 import line6.commands.ChangeChannelCommand;
+import line6.commands.parameters.BaseParameter;
 
 public class PresetsWidget extends BaseWidget implements ListSelectionListener {
 	private PresetsListWidget presets;

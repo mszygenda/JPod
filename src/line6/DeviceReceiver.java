@@ -11,13 +11,24 @@ import javax.sound.midi.SysexMessage;
 import javax.sound.midi.Receiver;
 import java.util.*;
 import line6.commands.*;
+import line6.events.CommandArriveListener;
 
+/**
+ * 
+ * @author Mateusz Szygenda
+ *	This class receives data from midi device and pass them to event handler
+ *	@see line6.events.CommandArriveListener
+ */
 public class DeviceReceiver implements Receiver {
 
 	private ArrayList <Command> commands;
-	private CommandArrived onCommandArrive;
+	private CommandArriveListener onCommandArrive;
 	
-	public DeviceReceiver(CommandArrived eventHandler)
+	/**
+	 * Creates new DeviceReceiver
+	 * @param eventHandler - Event listener that will be called everytime when new command arrives
+	 */
+	public DeviceReceiver(CommandArriveListener eventHandler)
 	{
 		commands = new ArrayList<Command>();
 		onCommandArrive = eventHandler;
@@ -28,11 +39,18 @@ public class DeviceReceiver implements Receiver {
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * Returns arraylist of received commands only if event listener is set to null
+	 * @return List of received commands
+	 */
 	public ArrayList<Command> getReceivedCommands()
 	{
 		return commands;
 	}
 	
+	/**
+	 * Passes raw midi message to correct CommandParser
+	 */
 	@Override
 	public void send(MidiMessage msg, long arg1) {
 		// TODO Auto-generated method stub

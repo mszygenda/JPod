@@ -5,9 +5,15 @@ import java.io.IOException;
 import java.util.Hashtable;
 
 import line6.DeviceSettings;
+import line6.commands.parameters.BaseParameter;
 import line6.commands.values.Global;
 
 
+/**
+ * Classs used to parse and generate Sysex messages
+ * @author Mateusz Szygenda
+ *
+ */
 public class SysexParser {
 	private ByteArrayInputStream stream;
 	private DeviceSettings settings;
@@ -23,6 +29,12 @@ public class SysexParser {
 		settings.setValue(p, stream.read()*25);
 	}
 	
+	/**
+	 * Reads 'length' characters from sysex message and returns them as string
+	 * @param length - Count of characters that should be get
+	 * @return 
+	 * @throws IOException
+	 */
 	public String readString(int length) throws IOException
 	{
 		byte str[] = new byte[length];
@@ -30,12 +42,21 @@ public class SysexParser {
 		return new String(str);
 	}
 	
-	
+	/**
+	 * Calls shortProperty(BaseParameter, 2.0);
+	 */
 	public void shortProperty(BaseParameter p) throws IOException
 	{
 		shortProperty(p, 2.0);
 	}
 	
+	
+	/**
+	 * Reads short int(2 bytes) from raw byteArray and stores value in preset passed in constructor
+	 * @param p - Parameter that should be readed
+	 * @param factor - Values in sysex messages differs from these set during live editing, so we have to multiply some of them using factor(Most of values should be multiplied by 2)
+	 * @throws IOException
+	 */
 	public void shortProperty(BaseParameter p, double factor) throws IOException
 	{
 		byte shortInt[] = new byte[2];
@@ -44,6 +65,10 @@ public class SysexParser {
 		settings.setValue(p, (int)(factor*value));
 	}
 	
+	/**
+	 * Reads byte property and stores value in preset passed in constructor
+	 * @param p - Which property will be readed
+	 */
 	public void byteProperty(BaseParameter p)
 	{
 		byteProperty(p,2.0);
@@ -56,7 +81,11 @@ public class SysexParser {
 		settings.setValue(p,(int)(factor*value));
 	}
 	
-	
+	/**
+	 * Reads one byte, stores value multiplied by EffectOn in preset passed in constructor
+	 * @param p
+	 * @throws IOException
+	 */
 	public void toggleProperty(BaseParameter p) throws IOException
 	{
 		settings.setValue(p, stream.read()*Global.EffectOn.id());
@@ -67,6 +96,8 @@ public class SysexParser {
 	 * POD sysex message has null bits between each byte of data so we have to remove them before parsing
 	 * in example: 03 0F which is 0000 0011 0000 1111 after call of this function will look like this:
 	 * 3F 0011 1111
+	 * 
+	 * This method should be called on every sysex message before parsing
 	 * @throws IOException 
 	 * 
 	 *
@@ -83,6 +114,10 @@ public class SysexParser {
 		return new ByteArrayInputStream(out.toByteArray());
 	}
 	
+	/**
+	 * Skips some bytes
+	 * @param bytes - Byte count to skip
+	 */
 	public void skip(long bytes)
 	{
 		stream.skip(bytes);
