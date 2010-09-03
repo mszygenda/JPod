@@ -11,6 +11,7 @@ import line6.commands.parameters.Parameter;
 public enum Cabinet implements BaseParameter {
 	SmallTweed2_1x8(0, "1960 Fender® Tweed Champ®"),
 	SmallTweed_1x12(1, "1952 Fender® Tweed Deluxe Reverb®"),
+	BritishClassA3_1x12(2,"1960 Vox® AC-15"),
 	BlackPanel_1x12(3, "1964 Fender® Blackface Deluxe Reverb®"),
 	Line6Flextone98_1x12(4),
 	BlackPanel2_2x12(5,"1965 Fender® Blackface Twin Reverb®"),

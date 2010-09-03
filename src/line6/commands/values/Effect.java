@@ -55,7 +55,7 @@ public enum Effect implements BaseParameter {
 			ParameterToggle.RotarySpeed,
 			EffectParameter.CompressorRatio
 			),
-	DelayComp(
+	DelayCompressor(
 			7, 
 			EffectParameter.Speed, 
 			EffectParameter.Predelay,

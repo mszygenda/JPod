@@ -123,7 +123,7 @@ public class PresetSyncCommand extends Command {
 					parser.skip(6);
 				}
 				else if(effectId == Effect.Compressor.id() ||
-						effectId == Effect.DelayComp.id() 	)
+						effectId == Effect.DelayCompressor.id() 	)
 				{
 					parser.comboProperty(EffectParameter.CompressorRatio);
 					parser.skip(6);
