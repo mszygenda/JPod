@@ -8,6 +8,7 @@ package line6;
 public class Misc {
 	public static String splitByUppercase(String str)
 	{
+		str = str.replace('_', ' ');
 		StringBuffer result = new StringBuffer();
 		for(int i = 0, count = str.length(); i < count; i++)
 		{

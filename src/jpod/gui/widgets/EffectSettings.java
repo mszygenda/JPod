@@ -89,7 +89,7 @@ public class EffectSettings extends BaseWidget {
 		JPanel reverbPanel = createPanel("Reverb");
 		JPanel effectPanel = createPanel("Effect");
 		JPanel wahPanel = createPanel("Wah-Wah");
-		JPanel eqPanel = createPanel("Equalizer");
+		JPanel eqPanel = createPanel("Equalizer / Pre-amp");
 		
 		
 		eqPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -296,7 +296,12 @@ public class EffectSettings extends BaseWidget {
 		if(widgets.containsKey(p) && widgets.get(p).getValue() != value)
 		{
 			if(value <= ChangeParameterCommand.MAX_VALUE && value >= 0)
+			{
+				//Dont Notify about this change(It comes from device and other widgets gets this event too)
+				widgets.get(p).setEventLock(true);
 				widgets.get(p).setValue(value);
+				widgets.get(p).setEventLock(false);
+			}
 			else
 				System.out.printf("Wrong value for %s, %d\n",p.toString(),value);
 		}

@@ -21,6 +21,7 @@ public class ParameterWidget extends JComponent {
 
 	private ArrayList<ChangeListener> listeners;
 	
+	protected boolean eventLock = false;
 	protected BaseParameter parameter;
 	protected int type;
 	protected int max;
@@ -45,6 +46,15 @@ public class ParameterWidget extends JComponent {
 		listeners.add(l);
 	}
 	
+	/**
+	 * Sets event lock. If it is set to true no event is raised by this widget.
+	 * 
+	 * @param lock - If true no event will be raised.
+	 */
+	public void setEventLock(boolean lock)
+	{
+		eventLock = lock;
+	}
 	public void setValue(int newVal)
 	{
 		
@@ -57,10 +67,18 @@ public class ParameterWidget extends JComponent {
 	}
 
 	public void stateChanged(ChangeEvent arg0) {
-		ChangeEvent event = new ChangeEvent(this);
-		for(ChangeListener l : listeners)
+		/**
+		 * We dont notify about value change if this change comes from device
+		 * 
+		 * notifyLock should be set in setValue method
+		 */
+		if(!eventLock)
 		{
-			l.stateChanged(event);
+			ChangeEvent event = new ChangeEvent(this);
+			for(ChangeListener l : listeners)
+			{
+				l.stateChanged(event);
+			}
 		}
 	}
 }

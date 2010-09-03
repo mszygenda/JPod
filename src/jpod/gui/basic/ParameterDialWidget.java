@@ -36,6 +36,7 @@ public class ParameterDialWidget extends ParameterWidget implements ChangeListen
 		slider.setOrientation(SwingConstants.HORIZONTAL);
 		slider.setPaintLabels(false);
 		slider.getModel().addChangeListener(this);
+
 		add(slider);
 		add(nameLabel);
 	}
