@@ -11,6 +11,7 @@ import line6.DeviceSettings;
 import line6.commands.parameters.EffectParameter;
 import line6.commands.parameters.Parameter;
 import line6.commands.parameters.ParameterToggle;
+import line6.commands.values.Effect;
 import line6.commands.values.Global;
 
 
@@ -78,7 +79,7 @@ public class PresetSyncCommand extends Command {
 				parser.toggleProperty(ParameterToggle.NoiseGate);
 				parser.toggleProperty(ParameterToggle.Bright);
 				
-				parser.byteProperty(Parameter.Amp,1.0);
+				parser.byteMidiProperty(Parameter.Amp);
 				parser.byteProperty(Parameter.Drive);
 				parser.byteProperty(Parameter.Drive2);
 				parser.byteProperty(Parameter.Bass);
@@ -88,34 +89,67 @@ public class PresetSyncCommand extends Command {
 				parser.byteProperty(Parameter.ChannelVolume);
 				parser.byteProperty(EffectParameter.NoiseGateThreshold);
 				parser.byteProperty(EffectParameter.NoiseGateDecay);
-				parser.byteProperty(EffectParameter.WahPosition, 1);
-				parser.byteProperty(EffectParameter.WahBotFreq, 1);
-				parser.byteProperty(EffectParameter.WahTopFreq, 1);
-				parser.skip(6);
-				parser.shortProperty(EffectParameter.DelayCoarse, 0.33);
-				parser.byteProperty(EffectParameter.DelayFine,1);
-				parser.skip(4);
+				parser.byteProperty(EffectParameter.WahPosition);
+				parser.byteProperty(EffectParameter.WahBotFreq);
+				parser.byteProperty(EffectParameter.WahTopFreq);
+				parser.skip(1); // Wah delta TopFreq - BotFreq
+				parser.skip(1); //Volume pedal level
+				parser.skip(1); // Volume pedal minimum
+				parser.skip(1); // Volume pedal position
+				parser.skip(1); // Delay type / not used
+				parser.byteProperty(EffectParameter.DelayCoarse);
+				parser.byteProperty(EffectParameter.DelayFine);
+				parser.skip(2); //Still delay /coarse fine
+				parser.skip(4); // Time 2 delay coarse - not used
 				parser.byteProperty(EffectParameter.DelayFeedback);
-				parser.skip(1);
+				parser.skip(1); // Delay feedback 2 not used
 				parser.byteProperty(EffectParameter.DelayLevel);
-				parser.skip(1);
+				parser.skip(1); // Delay leve 2 not used
 				parser.toggleProperty(ParameterToggle.ReverbSpringRoom);
-				parser.byteProperty(EffectParameter.ReverbDecay,3);
+				parser.byteProperty(EffectParameter.ReverbDecay);
 				parser.byteProperty(EffectParameter.ReverbTone);
 				parser.byteProperty(EffectParameter.ReverbDiffusion);
 				parser.byteProperty(EffectParameter.ReverbDensity);
 				parser.byteProperty(Parameter.Reverb);
-				parser.byteProperty(Parameter.Cabinet, 1.0);
+				parser.byteMidiProperty(Parameter.Cabinet);
 				parser.byteProperty(Parameter.Air);
-				parser.byteProperty(Parameter.Effect,1.0);
-				parser.skip(1);
-				parser.comboProperty(EffectParameter.CompressorRatio);
-				parser.byteProperty(EffectParameter.Speed,1);
-				parser.skip(1);
-				parser.byteProperty(EffectParameter.Depth,0.178);
-				parser.byteProperty(EffectParameter.Feedback, 0.333);
-				parser.skip(2);
-				
+				parser.byteMidiProperty(Parameter.Effect);
+				parser.byteProperty(Parameter.Effects);
+				int effectId = (settings.getValue(Parameter.Effect));
+				//Union of effects parameters, values depends on selected Effect
+				if(effectId == Effect.DelaySwell.id())
+				{
+					parser.byteProperty(EffectParameter.SwellAttackTime);
+					parser.skip(6);
+				}
+				else if(effectId == Effect.Compressor.id() ||
+						effectId == Effect.DelayComp.id() 	)
+				{
+					parser.comboProperty(EffectParameter.CompressorRatio);
+					parser.skip(6);
+				}
+				else if(effectId == Effect.Rotary.id())
+				{
+					//parser.toggleProperty(ParameterToggle.)
+					parser.skip(1);//Rotary current speed
+					parser.shortProperty(EffectParameter.FastSpeed);
+					parser.shortProperty(EffectParameter.SlowSpeed);
+					parser.skip(2);
+				}
+				else if(effectId == Effect.Tremolo.id() || 
+						effectId == Effect.DelayTremolo.id())
+				{
+					parser.shortProperty(EffectParameter.TremoloSpeed);
+					parser.byteProperty(EffectParameter.TremoloDepth);
+					parser.skip(4);
+				}
+				else
+				{
+					parser.shortProperty(EffectParameter.Speed);
+					parser.shortProperty(EffectParameter.Depth);
+					parser.byteProperty(EffectParameter.Feedback);
+					parser.shortProperty(EffectParameter.Predelay);
+				}
 				settings.setName(parser.readString(16));
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -28,14 +28,19 @@ public enum Global implements BaseParameter {
 		value = id;
 		name = newName;
 	}
+	
 	public int id()
 	{
 		return value;
 	}
 
+	/**
+	 * 
+	 * Returns it's id
+	 */
 	@Override
 	public int getMaxValue() {
-		return 0;
+		return id();
 	}
 	
 	@Override
@@ -47,5 +52,10 @@ public enum Global implements BaseParameter {
 		}
 		else
 			return super.toString();
+	}
+
+	@Override
+	public int getMinValue() {
+		return 0;
 	}
 }

@@ -11,6 +11,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeListener;
 
 
+import line6.commands.ChangeParameterCommand;
 import line6.commands.parameters.BaseParameter;
 import line6.commands.parameters.Parameter;
 
@@ -31,10 +32,10 @@ public class ParameterDialWidget extends ParameterWidget implements ChangeListen
 		slider = new JSlider();
 		slider.setName(name);
 		slider.setToolTipText(name);
-		slider.setMaximum(max);
+		slider.setMaximum(ChangeParameterCommand.MAX_VALUE);
 		slider.setOrientation(SwingConstants.HORIZONTAL);
 		slider.setPaintLabels(false);
-		slider.addChangeListener(this);
+		slider.getModel().addChangeListener(this);
 		add(slider);
 		add(nameLabel);
 	}
@@ -42,7 +43,8 @@ public class ParameterDialWidget extends ParameterWidget implements ChangeListen
 	@Override
 	public void setValue(int newVal)
 	{
-		slider.setValue(newVal);
+		if(newVal != slider.getValue())
+			slider.setValue(newVal);
 	}
 	
 	@Override

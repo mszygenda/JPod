@@ -204,7 +204,7 @@ public enum Effect implements BaseParameter {
 	}
 	@Override
 	public int getMaxValue() {
-		return 0;
+		return id();
 	}
 	
 	public static BaseParameter getValue(int valueId)
@@ -215,5 +215,10 @@ public enum Effect implements BaseParameter {
 				 return e;
 		 }
 		 return Parameter.Unknown;
+	}
+
+	@Override
+	public int getMinValue() {
+		return 0;
 	}
 }

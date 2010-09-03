@@ -295,7 +295,7 @@ public class EffectSettings extends BaseWidget {
 	public void parameterChanged(Device dev, BaseParameter p, int value, int oldValue) {
 		if(widgets.containsKey(p) && widgets.get(p).getValue() != value)
 		{
-			if(value <= p.getMaxValue() && value >= 0)
+			if(value <= ChangeParameterCommand.MAX_VALUE && value >= 0)
 				widgets.get(p).setValue(value);
 			else
 				System.out.printf("Wrong value for %s, %d\n",p.toString(),value);

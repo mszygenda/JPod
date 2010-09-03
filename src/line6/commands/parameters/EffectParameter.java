@@ -8,43 +8,45 @@ import line6.Misc;
 
 public enum EffectParameter implements BaseParameter {
 	
-	Depth(50,127),
-	Speed(51,127),
-	Feedback(53,127),
-	Predelay(54,127),
-	SwellAttackTime(49),
-	TremoloSpeed(58,127),
-	TremoloDepth(59,127),
-	DelayCoarse(30,127),
-	DelayFine(62,127),
-	DelayFeedback(32),
-	DelayLevel(34),
-	ReverbDecay(38),
-	ReverbTone(39),
-	ReverbDiffusion(40),
-	ReverbDensity(41),
-	WahPosition(4,127),
-	WahBotFreq(44,127),
-	WahTopFreq(45,127),
-	NoiseGateThreshold(23,127),
-	NoiseGateDecay(24),
-	SlowSpeed(57),
-	FastSpeed(56,122),
+	Depth(50, 0, 312),
+	Speed(51, 200, 65535),
+	Feedback(53, 0, 127),
+	Predelay(54, 1, 780),
+	SwellAttackTime(49, 0, 63),
+	TremoloSpeed(58, 150, 65535),
+	TremoloDepth(59, 0, 127),
+	DelayCoarse(30, 0, 98303),
+	DelayFine(62, 0, 98303),
+	DelayFeedback(32, 0, 63),
+	DelayLevel(34, 0, 63),
+	ReverbDecay(38, 0, 63),
+	ReverbTone(39, 0, 63),
+	ReverbDiffusion(40, 0, 63),
+	ReverbDensity(41, 0, 63),
+	WahPosition(4, 0, 127),
+	WahBotFreq(44, 0, 127),
+	WahTopFreq(45, 0, 127),
+	NoiseGateThreshold(23, 0, 96),
+	NoiseGateDecay(24, 0, 63),
+	SlowSpeed(57, 100, 65535),
+	FastSpeed(56, 100, 65535),
 	CompressorRatio(42);
 	
 	private int effect_parameter_id;
 	private int maxValue;
+	private int minValue;
 	private double factor;
 	
 	private EffectParameter(int id)
 	{
-		this(id,126);
+		this(id,0,127);
 	}
 	
-	private EffectParameter(int id, int _maxVal)
+	private EffectParameter(int id, int minVal, int maxVal)
 	{
 		effect_parameter_id = id;
-		maxValue = _maxVal;
+		maxValue = maxVal;
+		minValue = minVal;
 	}
 	
 	public int id()
@@ -57,8 +59,15 @@ public enum EffectParameter implements BaseParameter {
 		return maxValue;
 	}
 	
+	@Override
+	public int getMinValue() {
+		return minValue;
+	}
+	
 	public String toString()
 	{
 		return Misc.splitByUppercase(super.toString());
 	}
+
+
 }

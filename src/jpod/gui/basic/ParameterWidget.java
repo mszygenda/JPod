@@ -1,6 +1,7 @@
 package jpod.gui.basic;
 
 import java.awt.GridLayout;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;

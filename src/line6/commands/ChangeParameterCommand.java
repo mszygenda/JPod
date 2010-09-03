@@ -55,6 +55,7 @@ public class ChangeParameterCommand extends Command {
 		System.out.printf("%s\n",parameter.toString());
 		value = _value;
 	}
+	
 	/**
 	 * 
 	 * @return Parameter that this commands change
@@ -74,6 +75,11 @@ public class ChangeParameterCommand extends Command {
 		return parameter.id();
 	}
 	
+	
+	/**
+	 * Returns value of the parameter in 0-127 range
+	 * @return Integer less than 128
+	 */
 	public int getValue()
 	{
 		return value;
@@ -111,8 +117,13 @@ public class ChangeParameterCommand extends Command {
 		parameter = newParam;
 	}
 	
+	
+	/**
+	 * Sets value of the parameter
+	 * @param newValue - Should be in 0-127 range
+	 */
 	public void setValue(int newValue)
-	{
+	{	
 		value = newValue;
 	}
 
@@ -124,8 +135,8 @@ public class ChangeParameterCommand extends Command {
 		// TODO Auto-generated method stub
 		ShortMessage msg = new ShortMessage();
 		try {
-			msg.setMessage(getType(), parameter.id(), value);
-			System.out.println(msg.getData1());
+			msg.setMessage(getType(), parameter.id(), getValue());
+			System.out.println(toString());
 		} catch (InvalidMidiDataException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,7 +148,7 @@ public class ChangeParameterCommand extends Command {
 	{
 		return String.format("ChangeParameterCommand: parameter_id = %d, value = %d, parameter_name = %s,",
 				parameter.id(),
-				value, 
+				getValue(), 
 				parameter.toString());
 	}
 

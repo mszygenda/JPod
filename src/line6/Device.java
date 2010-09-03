@@ -7,6 +7,7 @@ import javax.sound.midi.*;
 
 import java.util.*;
 import line6.commands.*;
+import line6.commands.parameters.Parameter;
 import line6.events.CommandArriveListener;
 import line6.events.DeviceListener;
 
@@ -77,7 +78,7 @@ public class Device implements CommandArriveListener {
 	}
 	
 	/**
-	 * This method is called when new command arrives
+	 * This method is called when new command arrives on output or input
 	 * 
 	 * 
 	 */
@@ -107,7 +108,10 @@ public class Device implements CommandArriveListener {
 			activePreset.setValue(command.getParameter(), command.getValue());
 			for(DeviceListener listener : eventListeners)
 			{
-				listener.parameterChanged(this,command.getParameter(),command.getValue(), oldValue);
+				listener.parameterChanged(this,
+						command.getParameter(),
+						command.getValue(), 
+						oldValue);
 			}
 		}
 		if(c instanceof PresetSyncCommand)
@@ -237,8 +241,13 @@ public class Device implements CommandArriveListener {
 		if(isInitialized())
 		{
 			try {
-				midiDeviceInput.getReceiver().send(c.toMidiMessage(),-1);
+				midiDeviceInput.getReceiver().send(c.toMidiMessage(),midiDeviceOutput.getMicrosecondPosition());
 				commandArrived(c);
+				/**
+				 * 
+				 * TODO: Inform listeners about change
+				 * maybe static method in JPod to inform other widgets about output change
+				 */
 			} catch (MidiUnavailableException e) {
 				return false;
 			}

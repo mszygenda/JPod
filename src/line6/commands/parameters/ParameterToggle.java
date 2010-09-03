@@ -40,6 +40,11 @@ public enum ParameterToggle  implements BaseParameter {
 		return maxValue;
 	}
 	
+	@Override
+	public int getMinValue() {
+		return 0;
+	}
+	
 	public String toString()
 	{
 		return Misc.splitByUppercase(super.toString());

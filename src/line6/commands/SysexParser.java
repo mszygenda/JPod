@@ -6,6 +6,7 @@ import java.util.Hashtable;
 
 import line6.DeviceSettings;
 import line6.commands.parameters.BaseParameter;
+import line6.commands.parameters.Parameter;
 import line6.commands.values.Global;
 
 
@@ -42,27 +43,28 @@ public class SysexParser {
 		return new String(str);
 	}
 	
-	/**
-	 * Calls shortProperty(BaseParameter, 2.0);
-	 */
-	public void shortProperty(BaseParameter p) throws IOException
-	{
-		shortProperty(p, 2.0);
-	}
-	
+
 	
 	/**
 	 * Reads short int(2 bytes) from raw byteArray and stores value in preset passed in constructor
 	 * @param p - Parameter that should be readed
-	 * @param factor - Values in sysex messages differs from these set during live editing, so we have to multiply some of them using factor(Most of values should be multiplied by 2)
 	 * @throws IOException
 	 */
-	public void shortProperty(BaseParameter p, double factor) throws IOException
+	public void shortProperty(BaseParameter p) throws IOException
 	{
 		byte shortInt[] = new byte[2];
 		stream.read(shortInt);
 		int value = shortInt[1] + (8 << (int)shortInt[0]);
-		settings.setValue(p, (int)(factor*value));
+		settings.setValue(p, Parameter.getMidiValueFromDump(p, value));
+	}
+	
+	/**
+	 * Reads byte which should not be converted to midi integer(Because it is already in such format)
+	 * @param p
+	 */
+	public void byteMidiProperty(BaseParameter p)
+	{
+		settings.setValue(p, stream.read());
 	}
 	
 	/**
@@ -71,15 +73,11 @@ public class SysexParser {
 	 */
 	public void byteProperty(BaseParameter p)
 	{
-		byteProperty(p,2.0);
-	}
-	
-	public void byteProperty(BaseParameter p, double factor)
-	{
 		int value;
 		value = stream.read();
-		settings.setValue(p,(int)(factor*value));
+		settings.setValue(p,Parameter.getMidiValueFromDump(p, value));
 	}
+
 	
 	/**
 	 * Reads one byte, stores value multiplied by EffectOn in preset passed in constructor

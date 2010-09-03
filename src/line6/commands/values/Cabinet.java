@@ -38,7 +38,7 @@ public enum Cabinet implements BaseParameter {
 
 	@Override
 	public int getMaxValue() {
-		return 0;
+		return id();
 	}
 	
 	public static BaseParameter getValue(int valueId)
@@ -49,6 +49,11 @@ public enum Cabinet implements BaseParameter {
 				 return c;
 		 }
 		 return Parameter.Unknown;
+	}
+
+	@Override
+	public int getMinValue() {
+		return 0;
 	}
 	
 }
