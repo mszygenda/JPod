@@ -97,9 +97,10 @@ public class PresetSyncCommand extends Command {
 				parser.skip(1); // Volume pedal minimum
 				parser.skip(1); // Volume pedal position
 				parser.skip(1); // Delay type / not used
-			
-				parser.skip(2); //Still delay /coarse fine
-				parser.byteMidiProperty(EffectParameter.DelayCoarse); //TODO: Wrong place
+				
+				parser.skip(1); //Still delay /coarse fine
+				
+				parser.shortProperty(EffectParameter.DelayCoarse); //TODO: Wrong place
 				parser.byteProperty(EffectParameter.DelayFine);
 				parser.skip(4); // Time 2 delay coarse - not used
 				parser.byteProperty(EffectParameter.DelayFeedback);

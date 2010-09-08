@@ -15,7 +15,7 @@ public enum EffectParameter implements BaseParameter {
 	SwellAttackTime(49, 0, 63),
 	TremoloSpeed(58, 150, 3175),
 	TremoloDepth(59, 0, 127),
-	DelayCoarse(30, 0, 127),
+	DelayCoarse(30, 0, 383),
 	DelayFine(62, 0, 250),
 	DelayFeedback(32, 0, 63),
 	DelayLevel(34, 0, 63),
