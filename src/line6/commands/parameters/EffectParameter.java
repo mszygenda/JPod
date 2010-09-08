@@ -9,14 +9,14 @@ import line6.Misc;
 public enum EffectParameter implements BaseParameter {
 	
 	Depth(50, 0, 312),
-	Speed(51, 200, 65535),
+	Speed(51, 200, 6350),
 	Feedback(53, 0, 127),
 	Predelay(54, 1, 780),
 	SwellAttackTime(49, 0, 63),
-	TremoloSpeed(58, 150, 65535),
+	TremoloSpeed(58, 150, 3175),
 	TremoloDepth(59, 0, 127),
-	DelayCoarse(30, 0, 98303),
-	DelayFine(62, 0, 98303),
+	DelayCoarse(30, 0, 127),
+	DelayFine(62, 0, 250),
 	DelayFeedback(32, 0, 63),
 	DelayLevel(34, 0, 63),
 	ReverbDecay(38, 0, 63),
@@ -28,8 +28,8 @@ public enum EffectParameter implements BaseParameter {
 	WahTopFreq(45, 0, 127),
 	NoiseGateThreshold(23, 0, 96),
 	NoiseGateDecay(24, 0, 63),
-	SlowSpeed(57, 100, 65535),
-	FastSpeed(56, 100, 65535),
+	SlowSpeed(57, 100, 2894),
+	FastSpeed(56, 100, 2894),
 	CompressorRatio(42);
 	
 	private int effect_parameter_id;

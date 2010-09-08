@@ -1,8 +1,12 @@
 package line6.commands;
 import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
 import java.util.Hashtable;
+import java.math.*;
+import java.nio.ByteBuffer;
 
 import line6.DeviceSettings;
 import line6.commands.parameters.BaseParameter;
@@ -54,7 +58,9 @@ public class SysexParser {
 	{
 		byte shortInt[] = new byte[2];
 		stream.read(shortInt);
-		int value = shortInt[1] + (8 << (int)shortInt[0]);
+		System.out.printf("Bytes %s %02X %02X %d \n", p.toString(), shortInt[0], shortInt[1],shortInt[1] | ((int)shortInt[0]) << 8);
+		int value = (0xFF) & shortInt[1] | ((int)(0xFF & shortInt[0]) << 8);
+		System.out.printf("Without mod %s %d\n", p.toString(), value);
 		settings.setValue(p, Parameter.getMidiValueFromDump(p, value));
 	}
 	
@@ -109,6 +115,16 @@ public class SysexParser {
 			inputStream.read(tmp);
 			out.write(((int)tmp[0] << 4) + (int)tmp[1]);
 		}
+		ByteArrayInputStream tmpS = new ByteArrayInputStream(out.toByteArray());
+		int i = 1;
+		while(tmpS.available() > 0)
+		{
+			System.out.printf("%02X ", tmpS.read());
+			if(i % 16 == 0)
+				System.out.println();
+			i++;
+		}
+		System.out.println();
 		return new ByteArrayInputStream(out.toByteArray());
 	}
 	
