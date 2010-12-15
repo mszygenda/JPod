@@ -129,6 +129,8 @@ public class MainWindow extends javax.swing.JFrame implements DeviceListener {
 		}
 		activeDevice = (Device)devicesCB.getSelectedItem();
 		raiseActiveDeviceChanged();
+		if(activeDevice == null)
+			JOptionPane.showMessageDialog(this, "Application can not find any line 6 device. Plug in your device and restart application", "No Line6 devices", JOptionPane.WARNING_MESSAGE, null);
 	}
 	
 	class DeviceChangedEvent implements ItemListener
