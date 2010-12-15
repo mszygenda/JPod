@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: jpod
+Bundle-SymbolicName: jpod
+Bundle-Version: 1.0.0.qualifier
+Export-Package: jpod,
+ jpod.gui,
+ jpod.gui.basic,
+ jpod.gui.widgets,
+ jpod.utils,
+ line6,
+ line6.commands,
+ line6.commands.parameters,
+ line6.commands.values,
+ line6.events
